@@ -22,7 +22,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|  [{  |           |  ]}  |------+------+------+------+------+--------|
  * | LShift |   Z  |   X  |   C  |   V  |   B  |      |           |      |   N  |   M  |  ,<  |  .>  |  /?  | RShift |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   | TG CR|      | LAlt | Cmd  | MO CR|                                       | MO CR|  F7  |  F10 |      |      |
+ *   | TG CR|      |      | LAlt | Cmd  |                                       | MO CR|  F7  |  F10 |      |      |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,---------------.
  *                                        | F13  | F14  |       | F15  |  F16   |
@@ -40,7 +40,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,     KC_Q,       KC_W,       KC_E,       KC_R,       KC_T,       KC_LPRN,
     KC_LCTL,    KC_A,       KC_S,       KC_D,       KC_F,       KC_G,
     KC_LSFT,    KC_Z,       KC_X,       KC_C,       KC_V,       KC_B,       KC_LBRC,
-    TG(L_MOUS), KC_TRNS,    KC_LALT,    KC_LGUI,    MO(L_MOUS),
+    TG(L_MOUS), KC_TRNS,    KC_TRNS,    KC_LALT,    KC_LGUI,
 
                 KC_F13,     KC_F14,
                             KC_TRNS,
@@ -49,7 +49,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //righthand
     KC_EQL,     KC_6,       KC_7,       KC_8,       KC_9,       KC_0,       KC_GRV,
     KC_RPRN,    KC_Y,       KC_U,       KC_I,       KC_O,       KC_P,       KC_BSLS,
-                KC_H,       KC_J,       KC_K,       KC_L,       KC_SCLN,    KC_MINS ,
+                KC_H,       KC_J,       KC_K,       KC_L,       KC_SCLN,    KC_MINS,
     KC_RBRC,    KC_N,       KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,    KC_RSFT,
                             MO(L_MOUS), KC_F7,      KC_F10,     KC_TRNS,    KC_TRNS,
 
@@ -65,7 +65,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
  * |        |      | MWH_L| M_U  | MWH_R| MWH_D|      |           | Home | PgUp |c a L |  Up  |c a R |      | PgUp   |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |        |      | M_L  | M_D  | M_R  | MWH_U|------|           |------| PgDn | Left | Down | Right|      | PgDn   |
+ * |        |      | M_L  | M_D  | M_R  | MWH_U|------|           |------| PgDn | Left | Down | Right|M MCTL| PgDn   |
  * |--------+------+------+------+------+------|      |           | End  |------+------+------+------+------+--------|
  * | MAcl1  |      |      |      |      |      |      |           |      |      |      |      |      |      | End    |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
@@ -94,8 +94,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //righthand
     KC_F12,     KC_F6,      KC_F7,              KC_F8,      KC_F9,                KC_F10,     KC_HOME,
     KC_HOME,    KC_PGUP,    LALT(LGUI(KC_LEFT)),KC_UP,      LALT(LGUI(KC_RGHT)),  KC_TRNS,    KC_PGUP,
-                KC_PGDN,    KC_LEFT,            KC_DOWN,    KC_RIGHT,             KC_TRNS,    KC_PGDN,
-    KC_END,     KC_TRNS,    KC_TRNS,            KC_TRNS,    KC_TRNS,              MO(L_MCTL), KC_END,
+                KC_PGDN,    KC_LEFT,            KC_DOWN,    KC_RIGHT,             MO(L_MCTL), KC_PGDN,
+    KC_END,     KC_TRNS,    KC_TRNS,            KC_TRNS,    KC_TRNS,              KC_TRNS,    KC_END,
                             KC_TRNS,            KC_TRNS,    KC_TRNS,              KC_TRNS,    KC_TRNS,
 
     KC_TRNS,    KC_MS_BTN3,
