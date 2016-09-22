@@ -207,10 +207,10 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
     if (record->event.pressed) {
         switch(id) {
             case 0:
-                return MACRO( D(LANG2), D(MHEN), END );
+                return MACRO( T(MHEN), T(LANG2), END);
                 break;
             case 1:
-                return MACRO( D(LANG1), D(HENK), END );
+                return MACRO( T(HENK), T(LANG1), END);
                 break;
         }
     }
