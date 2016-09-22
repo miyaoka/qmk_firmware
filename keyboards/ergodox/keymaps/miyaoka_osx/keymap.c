@@ -28,7 +28,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                        | F13  | F14  |       | F15  |  F16   |
  *                                 ,------|------|------|       |------+--------+------.
  *                                 |      |      |      |       |      |        |      |
- *                                 | Space|s+c+: |------|       |------| s+c+j  | Ent  |
+ *                                 | Space| F13  |------|       |------| s+c+j  | Ent  |
  *                                 |      |      | EISU |       | KANA |        |      |
  *                                 `--------------------'       `----------------------'
  */
@@ -44,7 +44,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                 KC_F13,     KC_F14,
                             KC_TRNS,
-    KC_SPACE,   LSFT(LCTL(KC_SCLN)),    KC_LANG2,
+    KC_SPACE,   KC_F13,     KC_LANG2,
 
     //righthand
     KC_EQL,     KC_6,       KC_7,       KC_8,       KC_9,       KC_0,       KC_GRV,
