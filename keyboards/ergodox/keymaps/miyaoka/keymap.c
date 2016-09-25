@@ -25,7 +25,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *   |      |      |      | LAlt | Cmd  |                                       | -> CR|  BS  |  F10 | DEL  |      |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,---------------.
- *                                        | F13  | F14  |       | F15  |  F16   |
+ *                                        |ctl F2|      |       |ctl sp| ctl F3 |
  *                                 ,------|------|------|       |------+--------+------.
  *                                 |      |      |      |       |      |        |      |
  *                                 | Space| EISU |------|       |------| KANA   | Ent  |
@@ -42,7 +42,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_LSFT,    KC_Z,       KC_X,       KC_C,       KC_V,       KC_B,       KC_LBRC,
     KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_LALT,    KC_LGUI,
 
-                KC_F13,     KC_F14,
+                LCTL(KC_F2),     KC_TRNS,
                             KC_TRNS,
     KC_SPACE,   M(0),       KC_TRNS,
 
@@ -53,7 +53,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_RBRC,    KC_N,       KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,    KC_RSFT,
                             MO(L_MOUS), KC_BSPC,    KC_F10,     KC_DEL,     KC_TRNS,
 
-    KC_F15,     KC_F16,
+    LCTL(KC_SPC),     LCTL(KC_F3),
     KC_TRNS,
     KC_TRNS,    M(1),       KC_ENT
 ),
