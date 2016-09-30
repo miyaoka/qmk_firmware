@@ -10,6 +10,25 @@
 #define L_MCTL 2 // mission ctrl
 #define L_RSET 3 // reest
 
+//Alias
+#define C(kc) LCTL(kc)
+#define SC(kc) (C(S(kc)))
+#define SC(kc) (C(S(kc)))
+#define KC_M_WU KC_MS_WH_UP
+#define KC_M_WD KC_MS_WH_DOWN
+#define KC_M_WL KC_MS_WH_LEFT
+#define KC_M_WR KC_MS_WH_RIGHT
+#define KC_M_U KC_MS_U
+#define KC_M_D KC_MS_D
+#define KC_M_L KC_MS_L
+#define KC_M_R KC_MS_R
+#define KC_M_A0 KC_MS_ACCEL0
+#define KC_M_A1 KC_MS_ACCEL1
+#define KC_M_A2 KC_MS_ACCEL2
+#define KC_M_B1 KC_MS_BTN1
+#define KC_M_B2 KC_MS_BTN2
+#define KC_M_B3 KC_MS_BTN3
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Basic layer
  *
