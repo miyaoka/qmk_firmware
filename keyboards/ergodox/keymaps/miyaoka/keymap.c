@@ -39,7 +39,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * | LCtrl  |   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |  ;:  |   '"   |
  * |--------+------+------+------+------+------|  [{  |           |  ]}  |------+------+------+------+------+--------|
- * | LShift |   Z  |   X  |   C  |   V  |   B  |      |           |      |   N  |   M  |  ,<  |  .>  |  /?  | RShift |
+ * | LShift |   Z  |   X  |   C  |   V  |   B  |      |           |      |   N  |   M  |  ,<  |  .>  |  /?  |   -_   |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   |      |      |      | LAlt | Space|                                       | Ent  |  BS  |      | DEL  |      |
  *   `----------------------------------'                                       `----------------------------------'
@@ -47,7 +47,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                        |ctl F2|      |       |ctl sp| ctl F3 |
  *                                 ,------|------|------|       |------+--------+------.
  *                                 |      |      |      |       |      |        |      |
- *                                 | Cmd  |LShift|------|       |------| KANA   | ->CR |
+ *                                 |LShift| Cmd  |------|       |------| KANA   | ->CR |
  *                                 |      |      |      |       | EISU |        |      |
  *                                 `--------------------'       `----------------------'
  */
@@ -63,13 +63,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                 C(KC_F2),   KC_TRNS,
                             KC_TRNS,
-    KC_LGUI,    KC_LSFT,    KC_TRNS,
+    KC_LSFT,    KC_LGUI,    KC_TRNS,
 
     //righthand
     KC_EQL,     KC_6,       KC_7,       KC_8,       KC_9,       KC_0,       KC_BSLS,
     KC_RPRN,    KC_Y,       KC_U,       KC_I,       KC_O,       KC_P,       KC_MINS,
                 KC_H,       KC_J,       KC_K,       KC_L,       KC_SCLN,    KC_QUOT,
-    KC_RBRC,    KC_N,       KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,    KC_RSFT,
+    KC_RBRC,    KC_N,       KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,    KC_MINS,
                             KC_ENT,     KC_BSPC,    KC_TRNS,    KC_DEL,     KC_TRNS,
 
     C(KC_SPC),  C(KC_F3),
