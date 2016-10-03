@@ -35,7 +35,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Basic layer
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
- * | ESC    |   1! |   2@ |   3# |   4$ |   5% |      |           |  DEL |   6^ |   7& |   8* |   9( |   0) |   `~   |
+ * | ESC    |   1! |   2@ |   3# |   4$ |   5% |      |           |      |   6^ |   7& |   8* |   9( |   0) |   `~   |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
  * | Tab    |   Q  |   W  |   E  |   R  |   T  |  [{  |           |  ]}  |   Y  |   U  |   I  |   O  |   P  |   \|   |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
@@ -50,7 +50,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                 ,------|------|------|       |------+--------+------.
  *                                 |      |      |      |       |      |        |      |
  *                                 | Space| LAlt |------|       |------| LShift | Enter|
- *                                 |  Cmd |      | LCtrl|       |      |        | ->L2 |
+ *                                 |  Cmd |      | LCtrl|       | Del  |        | ->L2 |
  *                                 `--------------------'       `----------------------'
  */
 // If it accepts an argument (i.e, is a function), it doesn't need KC_.
@@ -69,7 +69,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
     //righthand
-    KC_DEL,     KC_6,       KC_7,       KC_8,       KC_9,       KC_0,       KC_GRV,
+    KC_TRNS,    KC_6,       KC_7,       KC_8,       KC_9,       KC_0,       KC_GRV,
     KC_RBRC,    KC_Y,       KC_U,       KC_I,       KC_O,       KC_P,       KC_BSLS,
                 KC_H,       KC_J,       KC_K,       KC_L,       KC_SCLN,    KC_QUOT,
     KC_EQL,     KC_N,       KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,    KC_MINS,
@@ -77,7 +77,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     C(KC_SPC),  C(KC_F3),
     KC_TRNS,
-    KC_TRNS,    KC_LSFT,    LT(L_CUR,KC_ENT)
+    KC_DEL,     KC_LSFT,    LT(L_CUR,KC_ENT)
 ),
 
 /* Keymap: Windows override
