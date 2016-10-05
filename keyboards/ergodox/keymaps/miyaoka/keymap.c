@@ -8,7 +8,7 @@
 #define L_MAC 0 // Mac layer
 #define L_WIN 1 // Windows
 #define L_CUR 10 // mouse and cursor
-#define L_MCTL 11 // mission ctrl
+#define L_OHD 11 // one hand
 #define L_CONF 20 // config
 
 //Alias
@@ -135,7 +135,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * |        |      | M_L  | M_D  | M_R  | MW_U |------|           |------| End  | Left | Down | Right|      |        |
  * |--------+------+------+------+------+------|SC Tab|           | C Tab|------+------+------+------+------+--------|
- * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
+ * |        |      |      |      |      |      |      |           |      |      |      |      |      |      | ->OHD  |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   |      |      |      |      |      |                                       |      |      |      |      |      |
  *   `----------------------------------'                                       `----------------------------------'
@@ -162,13 +162,58 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //righthand
     KC_F12,       KC_F6,          KC_F7,          KC_F8,          KC_F9,          KC_F10,           MO(L_CONF),
     KC_RPRN,      KC_HOME,        KC_PGUP,        KC_UP,          KC_PGDN,        KC_TRNS,          KC_TRNS,
-                  KC_END,         KC_LEFT,        KC_DOWN,        KC_RIGHT,       MO(L_MCTL),       KC_TRNS,
-    C(KC_TAB),    KC_TRNS,        KC_TRNS,        KC_TRNS,        KC_TRNS,        KC_TRNS,          KC_TRNS,
+                  KC_END,         KC_LEFT,        KC_DOWN,        KC_RIGHT,       KC_TRNS,          KC_TRNS,
+    C(KC_TAB),    KC_TRNS,        KC_TRNS,        KC_TRNS,        KC_TRNS,        KC_TRNS,          TG(L_OHD),
                                   KC_TRNS,        KC_TRNS,        KC_TRNS,        KC_TRNS,          KC_TRNS,
 
     KC_TRNS,      KC_TRNS,
     KC_TRNS,
     KC_TRNS,      KC_TRNS,   KC_TRNS
+),
+
+/* Keymap: OHD
+ *
+ * ,--------------------------------------------------.           ,--------------------------------------------------.
+ * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
+ * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
+ * |        |      |      |      |      |      |      |           |      | MBtn3| PgUp | M_U  | PgDn |      |        |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |        |      |      |      |      |      |------|           |------| MBtn1| M_L  | M_D  | M_R  | MBtn2|        |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
+ * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
+ *   |      |      |      |      |      |                                       |      |      |      |      |      |
+ *   `----------------------------------'                                       `----------------------------------'
+ *                                        ,-------------.       ,-------------.
+ *                                        |      |      |       |      |      |
+ *                                 ,------|------|------|       |------+------+------.
+ *                                 |      |      |      |       |      |      |      |
+ *                                 |      |      |------|       |------|      |      |
+ *                                 |      |      |      |       |      |      |      |
+ *                                 `--------------------'       `--------------------'
+ */
+[L_OHD] = KEYMAP(
+    // left hand
+    KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,
+    KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,
+    KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,
+    KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,
+    KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,
+
+                KC_NO,      KC_NO,
+                            KC_NO,
+    KC_NO,      KC_NO,      KC_NO,
+
+    //righthand
+    KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,
+    KC_NO,      KC_M_B3,    KC_PGUP,    KC_M_U,     KC_PGDN,    KC_NO,      KC_NO,
+                KC_M_B1,    KC_M_L,     KC_M_D,     KC_M_R,     KC_M_B2,    KC_NO,
+    KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_TRNS,
+                            KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,
+
+    KC_NO,      KC_NO,
+    KC_NO,
+    KC_NO,      KC_NO,      KC_NO
 ),
 
 
