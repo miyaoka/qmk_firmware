@@ -5,8 +5,9 @@
 #include "debug.h"
 #include "action_layer.h"
 
-#define L_MAC 0 // Mac layer
+#define L_MAC 0 // Mac Qwerty
 #define L_WIN 1 // Windows
+#define L_DVK 5 // Dvorak
 #define L_CUR 10 // mouse and cursor
 #define L_OHD 11 // one hand
 #define L_CONF 20 // config
@@ -30,6 +31,8 @@
 #define KC_M_B1 KC_MS_BTN1
 #define KC_M_B2 KC_MS_BTN2
 #define KC_M_B3 KC_MS_BTN3
+#define LANG_EN M(0)
+#define LANG_JA M(1)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Basic layer
@@ -61,7 +64,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,     KC_Q,       KC_W,       KC_E,       KC_R,       KC_T,       KC_LBRC,
     KC_LCTL,    KC_A,       KC_S,       KC_D,       KC_F,       KC_G,
     KC_LSFT,    KC_Z,       KC_X,       KC_C,       KC_V,       KC_B,       KC_TAB,
-    KC_TRNS,    KC_TRNS,    KC_GRV,     KC_BSLS,    M(0),
+    KC_TRNS,    KC_TRNS,    KC_GRV,     KC_BSLS,    LANG_EN,
 
                     C(KC_F2),   KC_TRNS,
                                 KC_LCTL,
@@ -73,12 +76,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_RBRC,    KC_Y,       KC_U,       KC_I,       KC_O,       KC_P,       KC_TRNS,
                 KC_H,       KC_J,       KC_K,       KC_L,       KC_SCLN,    KC_MINS,
     KC_QUOT,    KC_N,       KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,    KC_EQL,
-                            M(1),       KC_BSPC,    KC_TRNS,    KC_TRNS,    KC_TRNS,
+                            LANG_JA,    KC_BSPC,    KC_TRNS,    KC_TRNS,    KC_TRNS,
 
     C(KC_SPC),  C(KC_F3),
     KC_TRNS,
     KC_DEL,     KC_RSFT,    LT(L_CUR,KC_ENT)
 ),
+
 
 /* Keymap: Windows override
  *
@@ -118,6 +122,52 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
                 KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
     KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
+                            KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
+
+    KC_TRNS,    KC_TRNS,
+    KC_TRNS,
+    KC_TRNS,    KC_TRNS,    KC_TRNS
+),
+
+
+/* Keymap: Dvorak override
+ *
+ * ,--------------------------------------------------.           ,--------------------------------------------------.
+ * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
+ * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
+ * |        |   /? |  ,<  |  .>  |   P  |   Y  |      |           |      |   F  |   G  |   C  |   R  |   L  |        |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |        |   A  |   O  |   E  |   U  |   I  |------|           |------|   D  |   H  |   T  |   N  |   S  |        |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |        |   ;: |   Q  |   J  |   K  |   X  |      |           |      |   B  |   M  |   W  |   V  |   Z  |        |
+ * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
+ *   |      |      |      |      |      |                                       |      |      |      |      |      |
+ *   `----------------------------------'                                       `----------------------------------'
+ *                                        ,-------------.       ,-------------.
+ *                                        |      |      |       |      |      |
+ *                                 ,------|------|------|       |------+------+------.
+ *                                 |      |      |      |       |      |      |      |
+ *                                 |      |      |------|       |------|      |      |
+ *                                 |      |      |      |       |      |      |      |
+ *                                 `--------------------'       `--------------------'
+ */
+[L_DVK] = KEYMAP(
+    // left hand
+    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
+    KC_TRNS,    KC_SLSH,    KC_COMM,    KC_DOT,     KC_P,       KC_Y,       KC_TRNS,
+    KC_TRNS,    KC_A,       KC_O,       KC_E,       KC_U,       KC_I,
+    KC_TRNS,    KC_SCLN,    KC_Q,       KC_J,       KC_K,       KC_X,       KC_TRNS,
+    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
+
+                KC_TRNS,    KC_TRNS,
+                            KC_TRNS,
+    KC_TRNS,    KC_TRNS,    KC_TRNS,
+
+    //righthand
+    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
+    KC_TRNS,    KC_F,       KC_G,       KC_C,       KC_R,       KC_L,       KC_TRNS,
+                KC_D,       KC_H,       KC_T,       KC_N,       KC_S,       KC_TRNS,
+    KC_TRNS,    KC_B,       KC_M,       KC_W,       KC_V,       KC_Z,       KC_TRNS,
                             KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
 
     KC_TRNS,    KC_TRNS,
@@ -220,7 +270,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap: CONF
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
- * |  RESET | DF1  | DF2  |      |      |      |      |           |      |      |      |      |      |      |        |
+ * |  RESET | Mac  | Win  |      |      |      |      |           |      | QWRT | DVRK |      |      |      |        |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
  * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
@@ -251,7 +301,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS,    KC_TRNS,    KC_TRNS,
 
     //righthand
-    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
+    KC_TRNS,    TO(L_MAC, ON_PRESS), TO(L_DVK, ON_PRESS),KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
     KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
                 KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
     KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
