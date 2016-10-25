@@ -98,7 +98,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *   |      |      |      |      |      |                                       |      |      |      |      |      |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,-------------.
- *                                        |      |      |       |      |      |
+ *                                        |      |      |       |      |Alt F4|
  *                                 ,------|------|------|       |------+------+------.
  *                                 |      |      | Win  |       |      |      |      |
  *                                 | Space|      |------|       |------|      |      |
@@ -124,7 +124,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
                             KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
 
-    KC_TRNS,    KC_TRNS,
+    KC_TRNS,    A(KC_F4),
     KC_TRNS,
     KC_TRNS,    KC_TRNS,    KC_TRNS
 ),
