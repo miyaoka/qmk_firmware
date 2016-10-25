@@ -180,7 +180,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,--------------------------------------------------.           ,--------------------------------------------------.
  * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
- * |        |   Q  |   W  |   D  |   F  |   G  |      |           |      |   J  |   U  |   R  |   L  |  ;:  |        |
+ * |        |   Q  |   W  |   D  |   R  |   G  |      |           |      |   J  |   U  |   F  |   L  |  ;:  |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * |        |   A  |   S  |   E  |   T  |   K  |------|           |------|   Y  |   N  |   I  |   O  |   H  |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
@@ -199,7 +199,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [L_NRM] = KEYMAP(
     // left hand
     KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
-    KC_TRNS,    KC_Q,       KC_W,       KC_D,       KC_F,       KC_G,       KC_TRNS,
+    KC_TRNS,    KC_Q,       KC_W,       KC_D,       KC_R,       KC_G,       KC_TRNS,
     KC_TRNS,    KC_A,       KC_S,       KC_E,       KC_T,       KC_K,
     KC_TRNS,    KC_Z,       KC_X,       KC_C,       KC_V,       KC_B,       KC_TRNS,
     KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
@@ -211,7 +211,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     //righthand
     KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
-    KC_TRNS,    KC_J,       KC_U,       KC_R,       KC_L,       KC_SCLN,    KC_TRNS,
+    KC_TRNS,    KC_J,       KC_U,       KC_F,       KC_L,       KC_SCLN,    KC_TRNS,
                 KC_Y,       KC_N,       KC_I,       KC_O,       KC_H,       KC_TRNS,
     KC_TRNS,    KC_P,       KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,    KC_TRNS,
                             KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
