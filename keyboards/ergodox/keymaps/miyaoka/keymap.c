@@ -46,14 +46,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|  Tab |           |  '"  |------+------+------+------+------+--------|
  * | LShift |   Z  |   X  |   C  |   V  |   B  |      |           |      |   N  |   M  |  ,<  |  .>  |  /?  |   =+   |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   |      |      |  `~  |  \|  |  EN  |                                       |  JA  |  BS  |      |      |      |
+ *   |      |      |  `~  |  \|  |  EN  |                                       |  JA  |  BS  |  DEL |      |      |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,---------------.
  *                                        |ctl F2|      |       |ctl sp| ctl F3 |
  *                                 ,------|------|------|       |------+--------+------.
  *                                 |      |      | LCtrl|       |      |        |      |
  *                                 | Space|LShift|------|       |------| RShift | Enter|
- *                                 |  Cmd |      | LAlt |       | Del  |        | ->L2 |
+ *                                 |  Cmd |      | LAlt |       | ESC  |        | ->L2 |
  *                                 `--------------------'       `----------------------'
  */
 // If it accepts an argument (i.e, is a function), it doesn't need KC_.
@@ -76,11 +76,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_RBRC,    KC_Y,       KC_U,       KC_I,       KC_O,       KC_P,       KC_TRNS,
                 KC_H,       KC_J,       KC_K,       KC_L,       KC_SCLN,    KC_MINS,
     KC_QUOT,    KC_N,       KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,    KC_EQL,
-                            LANG_JA,    KC_BSPC,    KC_TRNS,    KC_TRNS,    KC_TRNS,
+                            LANG_JA,    KC_BSPC,    KC_DEL,     KC_TRNS,    KC_TRNS,
 
     C(KC_SPC),  C(KC_F3),
     KC_TRNS,
-    KC_DEL,     KC_RSFT,    LT(L_CUR,KC_ENT)
+    KC_ESC,     KC_RSFT,    LT(L_CUR,KC_ENT)
 ),
 
 
