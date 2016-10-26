@@ -281,13 +281,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|SC Tab|           | C Tab|------+------+------+------+------+--------|
  * |        |   1! |   2@ |   3# |   4$ |   5% |      |           |      |   6^ |   7& |   8* |   9( |   0) |        |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   |      |      |      |      |      |                                       |      |      |      |      |      |
+ *   |      |      |      | MBtn3| MBtn2|                                       |      |      |      |      |      |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,-------------.
- *                                        | MBtn3|      |       |      |      |
+ *                                        |      |      |       |      |      |
  *                                 ,------|------|------|       |------+------+------.
  *                                 |      |      |      |       |      |      |      |
- *                                 | MBtn1| MBtn2|------|       |------|      |      |
+ *                                 | MBtn1| 　　　|------|       |------|      |      |
  *                                 |      |      |      |       |      |      |      |
  *                                 `--------------------'       `--------------------'
  */
@@ -297,11 +297,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS,      KC_TRNS,        KC_M_WL,        KC_M_U,         KC_M_WR,        KC_M_WD,          KC_LPRN,
     KC_TRNS,      KC_TRNS,        KC_M_L,         KC_M_D,         KC_M_R,         KC_M_WU,
     KC_ESC,       KC_1,           KC_2,           KC_3,           KC_4,           KC_5,             SC(KC_TAB),
-    KC_TRNS,      KC_TRNS,        KC_TRNS,        KC_TRNS,        KC_TRNS,
+    KC_TRNS,      KC_TRNS,        KC_TRNS,        KC_M_B3,        KC_M_B2,
 
-                  KC_M_B3,        KC_TRNS,
+                  KC_TRNS,        KC_TRNS,
                                   KC_TRNS,
-    KC_M_B1,      KC_M_B2,        KC_TRNS,
+    KC_M_B1,      KC_TRNS,        KC_TRNS,
 
     //righthand
     KC_F12,       KC_F6,          KC_F7,          KC_F8,          KC_F9,          KC_F10,           MO(L_CONF),
