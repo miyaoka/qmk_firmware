@@ -9,6 +9,7 @@
 #define L_WIN 1 // Windows
 #define L_DVK 5 // Dvorak
 #define L_NRM 6 // Norman
+#define L_QWP 7 // QWPR
 #define L_CUR 10 // mouse and cursor
 #define L_CONF 20 // config
 
@@ -221,6 +222,52 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS,    KC_TRNS,    KC_TRNS
 ),
 
+/* Keymap: QWPR layer
+ *
+ * ,--------------------------------------------------.           ,--------------------------------------------------.
+ * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
+ * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
+ * |        |   Q  |   W  |   P  |   R  |   F  |      |           |      |   Y  |   U  |   K  |   L  |  ;:  |        |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |        |   A  |   S  |   D  |   T  |   G  |------|           |------|   H  |   N  |   I  |   O  |   E  |        |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |        |   Z  |   X  |   C  |   V  |   B  |      |           |      |   J  |   M  |  ,<  |  .>  |  /?  |        |
+ * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
+ *   |      |      |      |      |      |                                       |      |      |      |      |      |
+ *   `----------------------------------'                                       `----------------------------------'
+ *                                        ,-------------.       ,-------------.
+ *                                        |      |      |       |      |      |
+ *                                 ,------|------|------|       |------+------+------.
+ *                                 |      |      |      |       |      |      |      |
+ *                                 |      |      |------|       |------|      |      |
+ *                                 |      |      |      |       |      |      |      |
+ *                                 `--------------------'       `--------------------'
+ */
+[L_QWP] = KEYMAP(
+    // left hand
+    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
+    KC_TRNS,    KC_Q,       KC_W,       KC_P,       KC_R,       KC_F,       KC_TRNS,
+    KC_TRNS,    KC_A,       KC_S,       KC_D,       KC_T,       KC_G,
+    KC_TRNS,    KC_Z,       KC_X,       KC_C,       KC_V,       KC_B,       KC_TRNS,
+    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
+
+                KC_TRNS,    KC_TRNS,
+                            KC_TRNS,
+    KC_TRNS,    KC_TRNS,    KC_TRNS,
+
+
+    //righthand
+    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
+    KC_TRNS,    KC_Y,       KC_U,       KC_K,       KC_L,       KC_SCLN,    KC_TRNS,
+                KC_H,       KC_N,       KC_I,       KC_O,       KC_E,       KC_TRNS,
+    KC_TRNS,    KC_J,       KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,    KC_TRNS,
+                            KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
+
+    KC_TRNS,    KC_TRNS,
+    KC_TRNS,
+    KC_TRNS,    KC_TRNS,    KC_TRNS
+),
+
 
 
 /* Keymap: Cursor, Mouse Layer
@@ -272,7 +319,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap: CONF
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
- * |  RESET | Mac  | Win  |      |      |      |      |           |      | QWRT | DVRK | NRMN |      |      |        |
+ * |  RESET | Mac  | Win  |      |      |      |      |           |      | QWRT | DVRK | NRMN | QWPR |      |        |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
  * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
@@ -303,7 +350,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS,    KC_TRNS,    KC_TRNS,
 
     //righthand
-    KC_TRNS,    TO(L_MAC, ON_PRESS), TO(L_DVK, ON_PRESS), TO(L_NRM, ON_PRESS),    KC_TRNS,    KC_TRNS,    KC_TRNS,
+    KC_TRNS,    TO(L_MAC, ON_PRESS), TO(L_DVK, ON_PRESS), TO(L_NRM, ON_PRESS), TO(L_QWP, ON_PRESS), KC_TRNS,    KC_TRNS,
     KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
                 KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
     KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
