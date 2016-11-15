@@ -10,7 +10,7 @@
 #define L_DVK 5 // Dvorak
 #define L_NRM 6 // Norman
 #define L_QWP 7 // QWPR
-#define L_QWD 8 // QWDR
+#define L_QKDW 8 // QKDW
 #define L_CUR 10 // mouse and cursor
 #define L_CONF 20 // config
 
@@ -291,7 +291,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                 |      |      |      |       |      |      |      |
  *                                 `--------------------'       `--------------------'
  */
-[L_QWD] = KEYMAP(
+[L_QKDW] = KEYMAP(
     // left hand
     KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
     KC_TRNS,    KC_Q,       KC_K,       KC_D,       KC_W,       KC_F,       KC_TRNS,
@@ -366,7 +366,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap: CONF
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
- * |  RESET | Mac  | Win  |      |      |      |      |           |      | QWRT | DVRK | NRMN | QWPR | QWDR |        |
+ * |  RESET | Mac  | Win  |      |      |      |      |           |      | QWRT | DVRK | NRMN | QWPR | QKDW |        |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
  * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
@@ -397,7 +397,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS,    KC_TRNS,    KC_TRNS,
 
     //righthand
-    KC_TRNS,    TO(L_MAC, ON_PRESS), TO(L_DVK, ON_PRESS), TO(L_NRM, ON_PRESS), TO(L_QWP, ON_PRESS), TO(L_QWD, ON_PRESS),    KC_TRNS,
+    KC_TRNS,    TO(L_MAC, ON_PRESS), TO(L_DVK, ON_PRESS), TO(L_NRM, ON_PRESS), TO(L_QWP, ON_PRESS), TO(L_QKDW, ON_PRESS),    KC_TRNS,
     KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
                 KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
     KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
