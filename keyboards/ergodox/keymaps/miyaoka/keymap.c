@@ -296,7 +296,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
     KC_TRNS,    KC_Q,       KC_K,       KC_D,       KC_W,       KC_F,       KC_TRNS,
     KC_TRNS,    KC_A,       KC_S,       KC_U,       KC_T,       KC_G,
-    KC_TRNS,    KC_Z,       KC_X,       KC_C,       KC_R,       KC_V,       KC_TRNS,
+    KC_TRNS,    SFT_T(KC_Z),       ALT_T(KC_X),       KC_C,       KC_R,       KC_V,       KC_TRNS,
     KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
 
                 KC_TRNS,    KC_TRNS,
@@ -308,7 +308,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
     KC_TRNS,    KC_P,       KC_B,       KC_Y,       KC_J,       KC_SCLN,    KC_TRNS,
                 KC_H,       KC_N,       KC_I,       KC_O,       KC_E,       KC_TRNS,
-    KC_TRNS,    KC_L,       KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,    KC_TRNS,
+    KC_TRNS,    KC_L,       KC_M,       KC_COMM,    ALT_T(KC_DOT),     SFT_T(KC_SLSH),    KC_TRNS,
                             KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
 
     KC_TRNS,    KC_TRNS,
