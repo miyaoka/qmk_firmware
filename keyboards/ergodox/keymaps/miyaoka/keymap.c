@@ -53,9 +53,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                        ,-------------.       ,---------------.
  *                                        |ctl F2|      |       |ctl sp| ctl F3 |
  *                                 ,------|------|------|       |------+--------+------.
- *                                 |      |      | LCtrl|       |      |        |      |
- *                                 | Space|LShift|------|       |------| RShift | Enter|
- *                                 |  Cmd |      | LAlt |       | ESC  |        | ->L2 |
+ *                                 |      |      |      |       |      |        |      |
+ *                                 | Space| LAlt |------|       |------| RShift | Enter|
+ *                                 |  Cmd |      | LCtrl|       | ESC  |        | ->L2 |
  *                                 `--------------------'       `----------------------'
  */
 // If it accepts an argument (i.e, is a function), it doesn't need KC_.
@@ -69,8 +69,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS,    KC_TRNS,    KC_GRV,     KC_BSLS,    LANG_EN,
 
                     C(KC_F2),   KC_TRNS,
-                                KC_LCTL,
-    GUI_T(KC_SPC),  KC_LSFT,    KC_LALT,
+                                KC_TRNS,
+    GUI_T(KC_SPC),  KC_LALT,    KC_LCTL,
 
 
     //righthand
@@ -102,9 +102,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                        ,-------------.       ,-------------.
  *                                        |      |      |       |      |Alt F4|
  *                                 ,------|------|------|       |------+------+------.
- *                                 |      |      | Win  |       |      |      |      |
+ *                                 |      |      |      |       |      |      |      |
  *                                 | Space|      |------|       |------|      |      |
- *                                 | LCtrl|      |      |       |      |      |      |
+ *                                 | LCtrl|      | Win  |       |      |      |      |
  *                                 `--------------------'       `--------------------'
  */
 [L_WIN] = KEYMAP(
@@ -116,8 +116,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
 
                 KC_TRNS,    KC_TRNS,
-                            KC_LGUI,
-    CTL_T(KC_SPC),    KC_TRNS,    KC_TRNS,
+                            KC_TRNS,
+    CTL_T(KC_SPC),    KC_TRNS,    KC_LGUI,
 
     //righthand
     KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
