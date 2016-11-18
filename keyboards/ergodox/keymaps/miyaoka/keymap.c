@@ -298,7 +298,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 
 // Runs just one time when the keyboard initializes.
 void matrix_init_user(void) {
-
+  layer_on(L_QKDW);
 };
 
 // Runs constantly in the background, in a loop.
