@@ -36,6 +36,11 @@
 #define LANG_EN M(0)
 #define LANG_JA M(1)
 
+//Tap Dance Declarations
+enum {
+  TD_LANG = 0
+};
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Basic layer
  *
@@ -78,7 +83,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_RBRC,    KC_Y,       KC_U,       KC_I,       KC_O,       KC_P,       KC_TRNS,
                 KC_H,       KC_J,       KC_K,       KC_L,       KC_SCLN,    KC_BSLS,
     KC_QUOT,    KC_N,       KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,    KC_GRV,
-                            LANG_JA,    KC_BSPC,    KC_DEL,     KC_TRNS,    KC_TRNS,
+                            TD(TD_LANG),    KC_BSPC,    KC_DEL,     KC_TRNS,    KC_TRNS,
 
     C(KC_SPC),  C(KC_F3),
     KC_TRNS,
@@ -318,4 +323,11 @@ void matrix_scan_user(void) {
             break;
     }
 
+};
+
+//Tap Dance Definitions
+qk_tap_dance_action_t tap_dance_actions[] = {
+  //Tap once for Esc, twice for Caps Lock
+  [TD_LANG]  = ACTION_TAP_DANCE_DOUBLE(KC_LANG2, KC_LANG1)
+// Other declarations would go here, separated by commas, if you have them
 };
