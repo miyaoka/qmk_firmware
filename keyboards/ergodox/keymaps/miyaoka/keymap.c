@@ -5,15 +5,6 @@
 #include "debug.h"
 #include "action_layer.h"
 
-#define L_MAC 0 // Mac Qwerty
-#define L_WIN 1 // Windows
-#define L_DVK 5 // Dvorak
-#define L_NRM 6 // Norman
-#define L_QWP 7 // QWPR
-#define L_QKDW 8 // QKDW
-#define L_CUR 10 // mouse and cursor
-#define L_CONF 20 // config
-
 //Alias
 #define C(kc) LCTL(kc)
 #define A(kc) LALT(kc)
@@ -35,6 +26,15 @@
 #define KC_M_B3 KC_MS_BTN3
 #define LANG_EN M(0)
 #define LANG_JA M(1)
+
+//Layers
+enum {
+  L_MAC = 0, // Mac Qwerty
+  L_WIN, // Windows
+  L_QKDW, // QKDW
+  L_CUR, // mouse and cursor
+  L_CONF // config
+};
 
 //Tap Dance Declarations
 enum {
