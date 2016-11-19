@@ -324,10 +324,28 @@ void matrix_scan_user(void) {
     }
 
 };
+void dance_lang_finished (qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count == 1) {
+    register_code (KC_MHEN);
+    register_code (KC_LANG2);
+  } else {
+    register_code (KC_HENK);
+    register_code (KC_LANG1);
+  }
+}
 
+void dance_lang_reset (qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count == 1) {
+    unregister_code (KC_MHEN);
+    unregister_code (KC_LANG2);
+  } else {
+    unregister_code (KC_HENK);
+    unregister_code (KC_LANG1);
+  }
+}
 //Tap Dance Definitions
 qk_tap_dance_action_t tap_dance_actions[] = {
   //Tap once for Esc, twice for Caps Lock
-  [TD_LANG]  = ACTION_TAP_DANCE_DOUBLE(KC_LANG2, KC_LANG1)
+  [TD_LANG]  = ACTION_TAP_DANCE_FN_ADVANCED (NULL, dance_lang_finished, dance_lang_reset)
 // Other declarations would go here, separated by commas, if you have them
 };
