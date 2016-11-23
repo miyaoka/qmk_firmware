@@ -31,7 +31,7 @@
 enum {
   L_MAC = 0, // Mac Qwerty
   L_WIN, // Windows
-  L_QKDW, // QKDW
+  L_ASNT, // ASNT
   L_CUR, // mouse and cursor
   L_CONF // config
 };
@@ -141,14 +141,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 
 
-/* Keymap: QKDW layer
+/* Keymap: ASNT layer
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
  * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
  * |        |   Q  |   K  |   D  |   J  |   F  |      |           |      |   P  |   B  |   Y  |   W  |  ;:  |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |        |   A  |   S  |   I  |   T  |   G  |------|           |------|   H  |   N  |   E  |   O  |   U  |        |
+ * |        |   A  |   S  |   N  |   T  |   G  |------|           |------|   H  |   U  |   I  |   O  |   E  |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * |        |   Z  |   X  |   C  |   R  |   V  |      |           |      |   L  |   M  |  ,<  |  .>  |  /?  |        |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
@@ -162,12 +162,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                 |      |      |      |       |      |      |      |
  *                                 `--------------------'       `--------------------'
  */
-[L_QKDW] = KEYMAP(
+[L_ASNT] = KEYMAP(
     // left hand
     _______,    _______,    _______,    _______,    _______,    _______,    _______,
     _______,    KC_Q,       KC_K,       KC_D,       KC_J,       KC_F,       _______,
-    _______,    KC_A,       KC_S,       KC_I,       KC_T,       KC_G,
-    _______,    SFT_T(KC_Z),       KC_X,       KC_C,       KC_R,       KC_V,       _______,
+    _______,    KC_A,       KC_S,       KC_N,       KC_T,       KC_G,
+    _______,    KC_Z,       KC_X,       KC_C,       KC_R,       KC_V,       _______,
     _______,    _______,    _______,    _______,    _______,
 
                 _______,    _______,
@@ -178,7 +178,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //righthand
     _______,    _______,    _______,    _______,    _______,    _______,    _______,
     _______,    KC_P,       KC_B,       KC_Y,       KC_W,       KC_SCLN,    _______,
-                KC_H,       KC_N,       KC_E,       KC_O,       KC_U,       _______,
+                KC_H,       KC_U,       KC_I,       KC_O,       KC_E,       _______,
     _______,    KC_L,       KC_M,       KC_COMM,    ALT_T(KC_DOT),     SFT_T(KC_SLSH),    _______,
                             _______,    _______,    _______,    _______,    _______,
 
@@ -268,7 +268,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______,    _______,    _______,
 
     //righthand
-    _______,    TO(L_MAC, ON_PRESS), _______, _______, _______, TO(L_QKDW, ON_PRESS),    _______,
+    _______,    TO(L_MAC, ON_PRESS), _______, _______, _______, TO(L_ASNT, ON_PRESS),    _______,
     _______,    _______,    _______,    _______,    _______,    _______,    _______,
                 _______,    _______,    _______,    _______,    _______,    _______,
     _______,    _______,    _______,    _______,    _______,    _______,    _______,
@@ -302,7 +302,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 
 // Runs just one time when the keyboard initializes.
 void matrix_init_user(void) {
-  layer_on(L_QKDW);
+  layer_on(L_ASNT);
 };
 
 // Runs constantly in the background, in a loop.
