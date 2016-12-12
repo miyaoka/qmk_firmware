@@ -1,6 +1,6 @@
 // Netable differences vs. the default firmware for the ErgoDox EZ:
 // 1. The Cmd key is now on the right side, making Cmd+Space easier.
-// 2. The media keys work on OSX (But not on Windows).
+// 2. The media keys work on MAC (But not on Windows).
 #include "ergodox.h"
 #include "debug.h"
 #include "action_layer.h"
@@ -28,18 +28,20 @@
 #define LANG_JA M(1)
 
 //Layers
-enum {
-  L_MAC = 0, // Mac Qwerty
-  L_WIN, // Windows
+enum layers {
+  L_COMMON = 0,
+  L_MAC,
+  L_WIN,
+  L_QWERTY,
   L_QWDR,
-  L_GAME, // Game
-  L_GAME2, // Game layer2
-  L_CUR, // mouse and cursor
+  L_GAME,
+  L_GAME2,
+  L_NAV, // mouse and cursor
   L_CONF // config
 };
 
 //Tap Dance Declarations
-enum {
+enum taps {
   TD_LANG = 0
 };
 
@@ -47,6 +49,21 @@ enum custom_keycodes {
   // lang
   EISU = SAFE_RANGE,
   KANA,
+
+  //--layers--
+  // layouts
+  QWERTY,
+  QWDR,
+  GAME,
+
+  // momentary layer
+  NAV,
+  CONF,
+  GAME2,
+
+  // os
+  MAC,
+  WIN,
 };
 
 // Fillers to make layering clearer
@@ -59,51 +76,97 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,--------------------------------------------------.           ,--------------------------------------------------.
  * | ESC    |   1! |   2@ |   3# |   4$ |   5% |      |           |      |   6^ |   7& |   8* |   9( |   0) |        |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
- * | Tab    |   Q  |   W  |   E  |   R  |   T  |  [{  |           |  ]}  |   Y  |   U  |   I  |   O  |   P  |        |
+ * | Tab    |      |      |      |      |      |  [{  |           |  ]}  |      |      |      |      |      |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * | LCtrl  |   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |  ;:  |   \|   |
+ * | LCtrl  |      |      |      |      |      |------|           |------|      |      |      |      |      |   \|   |
  * |--------+------+------+------+------+------|  Tab |           |  '"  |------+------+------+------+------+--------|
- * | LShift |   Z  |   X  |   C  |   V  |   B  |      |           |      |   N  |   M  |  ,<  |  .>  |  /?  |   `~   |
+ * | LShift |      |      |      |      |      |      |           |      |      |      |      |      |      |   `~   |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   |      |      |      |  =+  |  -_  |                                       | LANG |  BS  |  DEL |      |      |
+ *   `----------------------------------'                                       `----------------------------------'
+ *                                        ,-------------.       ,---------------.
+ *                                        |      |      |       |      |        |
+ *                                 ,------|------|------|       |------+--------+------.
+ *                                 |      |      |      |       |      |        |      |
+ *                                 |      | LAlt |------|       |------| RShift | Enter|
+ *                                 |      |      | LCtrl|       | ESC  |        | ->L2 |
+ *                                 `--------------------'       `----------------------'
+ */
+// If it accepts an argument (i.e, is a function), it doesn't need KC_.
+// Otherwise, it needs KC_*
+[L_COMMON] = KEYMAP(  // layer 0 : default
+  // left hand
+  KC_ESC,     KC_1,       KC_2,       KC_3,       KC_4,       KC_5,       _______,
+  KC_TAB,     _______,    _______,    _______,    _______,    _______,    KC_LBRC,
+  KC_LCTL,    _______,    _______,    _______,    _______,    _______,
+  KC_LSFT,    _______,    _______,    _______,    _______,    _______,    KC_TAB,
+  _______,    _______,    _______,    KC_EQL,     KC_MINS,
+
+              _______,    _______,
+                          _______,
+  _______,    KC_LALT,    KC_LCTL,
+
+
+  //righthand
+  _______,    KC_6,       KC_7,       KC_8,       KC_9,       KC_0,       _______,
+  KC_RBRC,    _______,    _______,    _______,    _______,    _______,    _______,
+              _______,    _______,    _______,    _______,    _______,    KC_BSLS,
+  KC_QUOT,    _______,    _______,    _______,    _______,    _______,    KC_GRV,
+                          TD(TD_LANG),    KC_BSPC,    KC_DEL,     _______,    _______,
+
+  _______,    _______,
+  _______,
+  KC_ESC,     KC_RSFT,    LT(L_NAV,KC_ENT)
+),
+
+
+/* Keymap: Mac
+ *
+ * ,--------------------------------------------------.           ,--------------------------------------------------.
+ * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
+ * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
+ * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |        |      |      |      |      |      |------|           |------|      |      |      |      |      |        |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
+ * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
+ *   |      |      |      |      |      |                                       |      |      |      |      |      |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,---------------.
  *                                        |ctl F2|      |       |ctl sp| ctl F3 |
  *                                 ,------|------|------|       |------+--------+------.
  *                                 |      |      |      |       |      |        |      |
- *                                 | Space| LAlt |------|       |------| RShift | Enter|
- *                                 |  Cmd |      | LCtrl|       | ESC  |        | ->L2 |
+ *                                 | Space|      |------|       |------|        |      |
+ *                                 |  Cmd |      | LCtrl|       |      |        |      |
  *                                 `--------------------'       `----------------------'
  */
-// If it accepts an argument (i.e, is a function), it doesn't need KC_.
-// Otherwise, it needs KC_*
 [L_MAC] = KEYMAP(  // layer 0 : default
   // left hand
-  KC_ESC,     KC_1,       KC_2,       KC_3,       KC_4,       KC_5,       _______,
-  KC_TAB,     KC_Q,       KC_W,       KC_E,       KC_R,       KC_T,       KC_LBRC,
-  KC_LCTL,    KC_A,       KC_S,       KC_D,       KC_F,       KC_G,
-  KC_LSFT,    KC_Z,       KC_X,       KC_C,       KC_V,       KC_B,       KC_TAB,
-  _______,    _______,    _______,    KC_EQL,     KC_MINS,
+  _______,    _______,    _______,    _______,    _______,    _______,    _______,
+  _______,    _______,    _______,    _______,    _______,    _______,    _______,
+  _______,    _______,    _______,    _______,    _______,    _______,
+  _______,    _______,    _______,    _______,    _______,    _______,    _______,
+  _______,    _______,    _______,    _______,    _______,
 
-                  C(KC_F2),   _______,
-                              _______,
+                  C(KC_F2),   KC_M,
+                              KC_M,
   GUI_T(KC_SPC),  KC_LALT,    KC_LCTL,
 
 
   //righthand
-  _______,    KC_6,       KC_7,       KC_8,       KC_9,       KC_0,       _______,
-  KC_RBRC,    KC_Y,       KC_U,       KC_I,       KC_O,       KC_P,       _______,
-              KC_H,       KC_J,       KC_K,       KC_L,       KC_SCLN,    KC_BSLS,
-  KC_QUOT,    KC_N,       KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,    KC_GRV,
-                          TD(TD_LANG),    KC_BSPC,    KC_DEL,     _______,    _______,
+  _______,    _______,    _______,    _______,    _______,    _______,    _______,
+  _______,    _______,    _______,    _______,    _______,    _______,    _______,
+              _______,    _______,    _______,    _______,    _______,    _______,
+  _______,    _______,    _______,    _______,    _______,    _______,    _______,
+                          _______,    _______,    _______,    _______,    _______,
 
   C(KC_SPC),  C(KC_F3),
   _______,
-  KC_ESC,     KC_RSFT,    LT(L_CUR,KC_ENT)
+  _______,    _______,    _______
 ),
 
-
-/* Keymap: Windows override
+/* Keymap: Windows
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
  * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
@@ -117,7 +180,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *   |      |      |      |      |      |                                       |      |      |      |      |      |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,-------------.
- *                                        |      |      |       |      |Alt F4|
+ *                                        |Alt F4|      |       |      |      |
  *                                 ,------|------|------|       |------+------+------.
  *                                 |      |      |      |       |      |      |      |
  *                                 | Space|      |------|       |------|      |      |
@@ -132,8 +195,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______,    _______,    _______,    _______,    _______,    _______,    _______,
   _______,    _______,    _______,    _______,    _______,
 
-              _______,    _______,
-                          _______,
+              A(KC_F4),   _______,
+                          KC_W,
   CTL_T(KC_SPC),    _______,    KC_LGUI,
 
   //righthand
@@ -143,11 +206,40 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______,    _______,    _______,    _______,    _______,    _______,    _______,
                           _______,    _______,    _______,    _______,    _______,
 
-  _______,    A(KC_F4),
+  _______,    _______,
   _______,
   _______,    _______,    _______
 ),
 
+/* Keymap : QWERTY
+ *
+ * ,--------------------------------------------------.           ,--------------------------------------------------.
+ * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
+ * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
+ * |        |   Q  |   W  |   E  |   R  |   T  |      |           |      |   Y  |   U  |   I  |   O  |   P  |        |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |        |   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |  ;:  |        |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |        |   Z  |   X  |   C  |   V  |   B  |      |           |      |   N  |   M  |  ,<  |  .>  |  /?  |        |
+ * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
+ *   |      |      |      |      |      |                                       |      |      |      |      |      |
+ *   `----------------------------------'                                       `----------------------------------'
+ */
+[L_QWERTY] = KEYMAP(
+  // left hand
+  _______,    _______,    _______,    _______,    _______,    _______,    _______,
+  _______,    KC_Q,       KC_W,       KC_E,       KC_R,       KC_T,       _______,
+  _______,    KC_A,       KC_S,       KC_D,       KC_F,       KC_G,
+  _______,    KC_Z,       KC_X,       KC_C,       KC_V,       KC_B,       _______,
+  _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,
+
+  //righthand
+  _______,    _______,    _______,    _______,    _______,    _______,    _______,
+  _______,    KC_Y,       KC_U,       KC_I,       KC_O,       KC_P,       _______,
+              KC_H,       KC_J,       KC_K,       KC_L,       KC_SCLN,    _______,
+  _______,    KC_N,       KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,    _______,
+  _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______
+),
 
 /* Keymap:
  *
@@ -162,13 +254,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   |      |      |      |      |      |                                       |      |      |      |      |      |
  *   `----------------------------------'                                       `----------------------------------'
- *                                        ,-------------.       ,-------------.
- *                                        |      |      |       |      |      |
- *                                 ,------|------|------|       |------+------+------.
- *                                 |      |      |      |       |      |      |      |
- *                                 |      |      |------|       |------|      |      |
- *                                 |      |      |      |       |      |      |      |
- *                                 `--------------------'       `--------------------'
  */
 [L_QWDR] = KEYMAP(
   // left hand
@@ -176,25 +261,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______,    KC_Q,       KC_W,       KC_D,       KC_R,       KC_F,       _______,
   _______,    KC_A,       KC_S,       KC_U,       KC_T,       KC_G,
   _______,    KC_Z,       KC_X,       KC_C,       KC_B,       KC_V,       _______,
-  _______,    _______,    _______,    _______,    _______,
-
-              _______,    _______,
-                          _______,
-  _______,    _______,    _______,
-
+  _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,
 
   //righthand
   _______,    _______,    _______,    _______,    _______,    _______,    _______,
   _______,    KC_P,       KC_K,       KC_Y,       KC_L,       KC_SCLN,    _______,
               KC_H,       KC_N,       KC_I,       KC_O,       KC_E,       _______,
   _______,    KC_J,       KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,    _______,
-                          _______,    _______,    _______,    _______,    _______,
-
-  _______,    _______,
-  _______,
-  _______,    _______,    _______
+  _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______
 ),
-
 
 /* Keymap: Game
  *
@@ -240,7 +315,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______,
   _______,    _______,    _______
 ),
-
 
 /* Keymap: Game layer2
  *
@@ -306,11 +380,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                        |      |      |       |      |      |
  *                                 ,------|------|------|       |------+------+------.
  *                                 |      |      |      |       |      |      |      |
- *                                 | MBtn1| 　　　|------|       |------|      |      |
+ *                                 | MBtn1|      |------|       |------|      |      |
  *                                 |      |      |      |       |      |      |      |
  *                                 `--------------------'       `--------------------'
  */
-[L_CUR] = KEYMAP(
+[L_NAV] = KEYMAP(
     // left hand
     _______,      KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,            KC_F11,
     _______,      _______,        _______,        KC_M_U,         _______,        _______,          KC_LPRN,
@@ -338,11 +412,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap: CONF
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
- * |  RESET | Mac  | Win  |      |      |      |      |           |      | QWRT |      |      |      | QWDR |        |
+ * |  RESET | Mac  | Win  |      |      |      |      |           |      |      |      |      |      | QWRT |        |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
- * |        |      |      |      |      |      |      |           |      |      |      |      |      | game |        |
+ * |        |      |      |      |      |      |      |           |      |      |      |      |      | QWDR |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |        |      |      |      |      |      |------|           |------|      |      |      |      |      |        |
+ * |        |      |      |      |      |      |------|           |------|      |      |      |      | game |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
@@ -358,7 +432,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [L_CONF] = KEYMAP(
   // left hand
-  RESET,      DF(L_MAC),  DF(L_WIN),  _______,    _______,    _______,    _______,
+  RESET,      MAC,        WIN,        _______,    _______,    _______,    _______,
   _______,    _______,    _______,    _______,    _______,    _______,    _______,
   _______,    _______,    _______,    _______,    _______,    _______,
   _______,    _______,    _______,    _______,    _______,    _______,    _______,
@@ -369,9 +443,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______,    _______,    _______,
 
   //righthand
-  _______,    TO(L_MAC, ON_PRESS), _______, _______, _______, TO(L_QWDR, ON_PRESS), _______,
-  _______,    _______,    _______,    _______,    _______,    TO(L_GAME, ON_PRESS), _______,
-              _______,    _______,    _______,    _______,    _______,    _______,
+  _______,    _______,    _______,    _______,    _______,    QWERTY,     _______,
+  _______,    _______,    _______,    _______,    _______,    QWDR,       _______,
+              _______,    _______,    _______,    _______,    GAME,       _______,
   _______,    _______,    _______,    _______,    _______,    _______,    _______,
                           _______,    _______,    _______,    _______,    _______,
 
@@ -382,24 +456,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-const uint16_t PROGMEM fn_actions[] = {
-//    [1] = ACTION_LAYER_TAP_TOGGLE(L1)                // FN1 - Momentary Layer 1 (Symbols)
-};
+void persistant_default_layer_set(uint16_t default_layer) {
+  eeconfig_update_default_layer(default_layer);
+  default_layer_set(default_layer);
+}
 
-const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
-{
-  // MACRODOWN only works in this function
-  if (record->event.pressed) {
-    switch(id) {
-      case 0:
-        return MACRO( T(MHEN), T(LANG2), END);
-        break;
-      case 1:
-        return MACRO( T(HENK), T(LANG1), END);
-        break;
-    }
+void switch_layer (uint8_t layer, bool on) {
+  if (on) {
+    layer_on(layer);
+  } else {
+    layer_off(layer);
   }
-  return MACRO_NONE;
 };
 
 void type_code(uint8_t keycode){
@@ -432,18 +499,64 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
+
+    //--layers--
+
+    //layout
+    case QWERTY:
+      if (record->event.pressed) {
+        layer_move(L_QWERTY);
+      }
+      return false;
+      break;
+    case QWDR:
+      if (record->event.pressed) {
+        layer_move(L_QWDR);
+      }
+      return false;
+      break;
+    case GAME:
+      if (record->event.pressed) {
+        layer_move(L_GAME);
+      }
+      return false;
+      break;
+
+    //momentary layer
+    case GAME2:
+      switch_layer(L_GAME2, record->event.pressed);
+      return false;
+      break;
+    case NAV:
+      switch_layer(L_NAV, record->event.pressed);
+      return false;
+      break;
+    case CONF:
+      switch_layer(L_CONF, record->event.pressed);
+      return false;
+      break;
+
+    //os
+    case MAC:
+      if (record->event.pressed) {
+        persistant_default_layer_set(1UL<<L_MAC);
+      }
+      return false;
+      break;
+    case WIN:
+      if (record->event.pressed) {
+        persistant_default_layer_set(1UL<<L_WIN);
+      }
+      return false;
+      break;
   }
   return true;
 }
 
 // Runs just one time when the keyboard initializes.
 void matrix_init_user(void) {
-  layer_on(L_QWDR);
-};
-
-// Runs constantly in the background, in a loop.
-void matrix_scan_user(void) {
-
+  persistant_default_layer_set(1UL<<L_MAC);
+  layer_move(L_QWDR);
 };
 
 // control IME
