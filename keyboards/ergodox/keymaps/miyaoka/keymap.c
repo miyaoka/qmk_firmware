@@ -43,6 +43,12 @@ enum {
   TD_LANG = 0
 };
 
+enum custom_keycodes {
+  // lang
+  EISU = SAFE_RANGE,
+  KANA,
+};
+
 // Fillers to make layering clearer
 #define _______ KC_TRNS
 #define XXXXXXX KC_NO
@@ -396,6 +402,40 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
   return MACRO_NONE;
 };
 
+void type_code(uint8_t keycode){
+  register_code (keycode);
+  unregister_code (keycode);
+};
+
+void set_eisu(void){
+  type_code (KC_MHEN);
+  type_code (KC_LANG2);
+};
+
+void set_kana(void){
+  type_code (KC_HENK);
+  type_code (KC_LANG1);
+};
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    // lang
+    case EISU:
+      if (record->event.pressed) {
+        set_eisu();
+      }
+      return false;
+      break;
+    case KANA:
+      if (record->event.pressed) {
+        set_kana();
+      }
+      return false;
+      break;
+  }
+  return true;
+}
+
 // Runs just one time when the keyboard initializes.
 void matrix_init_user(void) {
   layer_on(L_QWDR);
@@ -409,15 +449,9 @@ void matrix_scan_user(void) {
 // control IME
 void dance_lang (qk_tap_dance_state_t *state, void *user_data) {
   if (state->count == 1) {
-    register_code (KC_MHEN);
-    unregister_code (KC_MHEN);
-    register_code (KC_LANG2);
-    unregister_code (KC_LANG2);
+    set_eisu();
   } else {
-    register_code (KC_HENK);
-    unregister_code (KC_HENK);
-    register_code (KC_LANG1);
-    unregister_code (KC_LANG1);
+    set_kana();
   }
 };
 
