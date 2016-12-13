@@ -149,8 +149,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______,    _______,    _______,    _______,    _______,    _______,    _______,
   _______,    _______,    _______,    _______,    _______,
 
-                  C(KC_F2),   KC_M,
-                              KC_M,
+                  C(KC_F2),   _______,
+                              _______,
   GUI_T(KC_SPC),  KC_LALT,    KC_LCTL,
 
 
@@ -196,7 +196,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______,    _______,    _______,    _______,    _______,
 
               A(KC_F4),   _______,
-                          KC_W,
+                          _______,
   CTL_T(KC_SPC),    _______,    KC_LGUI,
 
   //righthand
