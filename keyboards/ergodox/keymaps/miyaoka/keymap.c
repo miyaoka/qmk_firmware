@@ -40,19 +40,10 @@ enum layers {
   L_CONF // config
 };
 
-//Tap Dance Declarations
-enum taps {
-  TD_LANG = 0
-};
-
 enum custom_keycodes {
-  // lang
-  EISU = SAFE_RANGE,
-  KANA,
-
   //--layers--
   // layouts
-  QWERTY,
+  QWERTY = SAFE_RANGE,
   QWDR,
   GAME,
 
@@ -112,7 +103,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_RBRC,    _______,    _______,    _______,    _______,    _______,    _______,
               _______,    _______,    _______,    _______,    _______,    KC_BSLS,
   KC_QUOT,    _______,    _______,    _______,    _______,    _______,    KC_GRV,
-                          TD(TD_LANG),    KC_BSPC,    KC_DEL,     _______,    _______,
+                          _______,    KC_BSPC,    KC_DEL,     _______,    _______,
 
   _______,    _______,
   _______,
@@ -486,20 +477,6 @@ void set_kana(void){
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    // lang
-    case EISU:
-      if (record->event.pressed) {
-        set_eisu();
-      }
-      return false;
-      break;
-    case KANA:
-      if (record->event.pressed) {
-        set_kana();
-      }
-      return false;
-      break;
-
     //--layers--
 
     //layout
@@ -557,18 +534,4 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 void matrix_init_user(void) {
   persistant_default_layer_set(1UL<<L_MAC);
   layer_move(L_QWDR);
-};
-
-// control IME
-void dance_lang (qk_tap_dance_state_t *state, void *user_data) {
-  if (state->count == 1) {
-    set_eisu();
-  } else {
-    set_kana();
-  }
-};
-
-//Tap Dance Definitions
-qk_tap_dance_action_t tap_dance_actions[] = {
-  [TD_LANG]  = ACTION_TAP_DANCE_FN (dance_lang)
 };
