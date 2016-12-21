@@ -57,6 +57,13 @@ enum custom_keycodes {
   WIN,
 };
 
+enum macros {
+  T_EISU = 0,
+  T_KANA
+};
+
+uint16_t hold_timers[MATRIX_ROWS][MATRIX_COLS];
+
 // Fillers to make layering clearer
 #define _______ KC_TRNS
 #define XXXXXXX KC_NO
@@ -69,18 +76,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
  * | Tab    |      |      |      |      |      |  [{  |           |  ]}  |      |      |      |      |      |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * | LCtrl  |      |      |      |      |      |------|           |------|      |      |      |      |      |   \|   |
+ * | LCtrl  |      |      |      |      |      |------|           |------|      |      |      |      |      |        |
  * |--------+------+------+------+------+------|  Tab |           |  '"  |------+------+------+------+------+--------|
- * | LShift |      |      |      |      |      |      |           |      |      |      |      |      |      |   `~   |
+ * | LShift |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   |      |      |      |  =+  |  -_  |                                       | LANG |  BS  |  DEL |      |      |
+ *   |      |      |  \|  |  `~  | -_ /S|                                       | =+ /S|  BS  |  DEL |      |      |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,---------------.
  *                                        |      |      |       |      |        |
  *                                 ,------|------|------|       |------+--------+------.
  *                                 |      |      |      |       |      |        |      |
- *                                 |      | LAlt |------|       |------| RShift | Enter|
- *                                 |      |      | LCtrl|       | ESC  |        | ->L2 |
+ *                                 |      | EISU |------|       |------| KANA   | Enter|
+ *                                 |      | /LAlt| LCtrl|       | ESC  | /SYMB  | /NAV |
  *                                 `--------------------'       `----------------------'
  */
 // If it accepts an argument (i.e, is a function), it doesn't need KC_.
@@ -91,23 +98,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_TAB,     _______,    _______,    _______,    _______,    _______,    KC_LBRC,
   KC_LCTL,    _______,    _______,    _______,    _______,    _______,
   KC_LSFT,    _______,    _______,    _______,    _______,    _______,    KC_TAB,
-  _______,    _______,    _______,    KC_EQL,     KC_MINS,
+  _______,    _______,    KC_BSLS,    KC_GRV,     SFT_T(KC_MINS),
 
-              _______,    _______,
+              _______,    M(T_EISU),
                           _______,
-  _______,    KC_LALT,    KC_LCTL,
+  _______,    M(T_EISU),    KC_LCTL,
 
 
   //righthand
   _______,    KC_6,       KC_7,       KC_8,       KC_9,       KC_0,       _______,
   KC_RBRC,    _______,    _______,    _______,    _______,    _______,    _______,
-              _______,    _______,    _______,    _______,    _______,    KC_BSLS,
-  KC_QUOT,    _______,    _______,    _______,    _______,    _______,    KC_GRV,
-                          _______,    KC_BSPC,    KC_DEL,     _______,    _______,
+              _______,    _______,    _______,    _______,    _______,    _______,
+  KC_QUOT,    _______,    _______,    _______,    _______,    _______,    _______,
+                          SFT_T(KC_EQL),    KC_BSPC,    KC_DEL,     _______,    _______,
 
   _______,    _______,
   _______,
-  KC_ESC,     KC_RSFT,    LT(L_NAV,KC_ENT)
+  KC_ESC,     M(T_KANA),    LT(L_NAV,KC_ENT)
 ),
 
 
@@ -142,7 +149,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                   C(KC_F2),   _______,
                               _______,
-  GUI_T(KC_SPC),  KC_LALT,    KC_LCTL,
+  GUI_T(KC_SPC),  _______,    KC_LCTL,
 
 
   //righthand
@@ -475,7 +482,17 @@ void set_kana(void){
   type_code (KC_LANG1);
 };
 
+bool is_tap (keyrecord_t *record) {
+  return hold_timers[record->event.key.row][record->event.key.col]
+  && timer_elapsed (hold_timers[record->event.key.row][record->event.key.col]) < TAPPING_TERM;
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  // record pressed timer
+  if (record->event.pressed) {
+    hold_timers[record->event.key.row][record->event.key.col] = timer_read();
+  }
+
   switch (keycode) {
     //--layers--
 
@@ -529,6 +546,35 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
   return true;
 }
+
+const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
+{
+  switch(id) {
+    case T_EISU: {
+      if (record->event.pressed) {
+        register_mods (MOD_BIT(KC_LALT));
+      } else {
+        unregister_mods (MOD_BIT(KC_LALT));
+        if (is_tap(record)) {
+          set_eisu();
+        }
+      }
+      break;
+    }
+    case T_KANA: {
+      if (record->event.pressed) {
+        layer_on(L_SYMB);
+      } else {
+        layer_off(L_SYMB);
+        if (is_tap(record)) {
+          set_kana();
+        }
+      }
+      break;
+    }
+  }
+  return MACRO_NONE;
+};
 
 // Runs just one time when the keyboard initializes.
 void matrix_init_user(void) {
