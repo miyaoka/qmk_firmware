@@ -8,7 +8,6 @@
 #include "debug.h"
 #include "action_layer.h"
 #include "action_util.h"
-#include "mousekey.h"
 #include "timer.h"
 #include "keymap_plover.h"
 #include "eeconfig.h"
@@ -36,35 +35,12 @@ enum {
   A_PLVR,
   A_MPN,
 
-  // Function / number keys
-  KF_1, // 1, F1
-  KF_2, // 2, F2
-  KF_3, // ...
-  KF_4,
-  KF_5,
-  KF_6,
-  KF_7,
-  KF_8,
-  KF_9,
-  KF_10,
-
   // Application select keys
   APP_SLK, // Slack
   APP_EMCS, // Emacs
   APP_TERM, // Terminal
   APP_CHRM, // Chrome
   APP_MSIC, // Music
-
-  // Diagonal mouse movement
-  A_MUL,
-  A_MUR,
-  A_MDL,
-  A_MDR,
-
-  // Mouse acceleration
-  A_ACL0,
-  A_ACL1,
-  A_ACL2,
 
   // Hungarian layer keys
   HU_AA, // Á
@@ -76,6 +52,21 @@ enum {
   HU_UE, // Ü
   HU_OEE, // Ő
   HU_UEE, // Ű
+
+  // number/symbol keys
+  A_1, // 1
+  A_2, // 2
+  A_3, // ...
+  A_4,
+  A_5,
+  A_6,
+  A_7,
+  A_8,
+  A_9,
+  A_0,
+
+  // Fx
+  Fx,
 };
 
 /* Fn keys */
@@ -95,7 +86,10 @@ enum {
   CT_CLN = 0,
   CT_TA,
   CT_LBP,
-  CT_RBP
+  CT_RBP,
+  CT_TMUX,
+  CT_TPS,
+  CT_SR,
 };
 
 /* States & timers */
@@ -113,6 +107,9 @@ bool log_enable = false;
 #endif
 
 bool time_travel = false;
+bool skip_leds = false;
+
+static uint8_t is_adore = 0;
 
 /* The Keymap */
 
@@ -121,13 +118,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Base Layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
- * | Next/Prev | 1 F1 | 2 F2 | 3 F3 | 4 F4 | 5 F5 | Plvr |           |  F12 | 6 F6 | 7 F7 | 8 F8 | 9 F9 | 0 F10|       F11 |
+ * | Next/Prev | 9    | 7  @ | 5  * | 3  ^ | 1  $ | F11  |           |  Fx  | 0  % | 2  ! | 4  # | 6  & | 8    |    Plover |
  * |-----------+------+------+------+------+-------------|           |------+------+------+------+------+------+-----------|
  * |         ~ |   '  |   ,  |   .  |   P  |   Y  |   (  |           |  )   |   F  |   G  |   C  |   R  |  L   | \         |
  * |-----------+------+------+------+------+------|   [  |           |  ]   |------+------+------+------+------+-----------|
  * | Tab/ARROW |   A  |   O  |   E  |   U  |   I  |------|           |------|   D  |   H  |   T  |   N  |  S   | = / Arrow |
- * |-----------+------+------+------+------+------|   :  |           |  -   |------+------+------+------+------+-----------|
- * | Play/Pause|   /  |   Q  |   J  |   K  |   X  |      |           |      |   B  |   M  |   W  |   V  |  Z   |      Stop |
+ * |-----------+------+------+------+------+------| tmux |           | tmux |------+------+------+------+------+-----------|
+ * | Play/Pause|   /  |   Q  |   J  |   K  |   X  |      |           | Pane |   B  |   M  |   W  |   V  |  Z   | Stop/Reset|
  * `-----------+------+------+------+------+-------------'           `-------------+------+------+------+------+-----------'
  *     |       |      |      |      |   :  |                                       |   -  |      |      |      |       |
  *     `-----------------------------------'                                       `-----------------------------------'
@@ -141,22 +138,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [BASE] = KEYMAP(
 // left hand
- M(A_MPN)           ,M(KF_1)     ,M(KF_2)     ,M(KF_3),M(KF_4),M(KF_5),M(A_PLVR)
-,KC_GRV             ,KC_QUOT     ,KC_COMM     ,KC_DOT ,KC_P   ,KC_Y   ,TD(CT_LBP)
-,TD(CT_TA)          ,KC_A        ,KC_O        ,KC_E   ,KC_U   ,KC_I
-,KC_MPLY            ,KC_SLSH     ,KC_Q        ,KC_J   ,KC_K   ,KC_X   ,TD(CT_CLN)
-,KC_NO              ,KC_NO       ,KC_NO       ,KC_NO  ,TD(CT_CLN)
+ M(A_MPN)           ,M(A_9)      ,M(A_7)      ,M(A_5)  ,M(A_3)  ,M(A_1)  ,KC_F11
+,KC_GRV             ,KC_QUOT     ,KC_COMM     ,KC_DOT  ,KC_P    ,KC_Y    ,TD(CT_LBP)
+,TD(CT_TA)          ,KC_A        ,KC_O        ,KC_E    ,KC_U    ,KC_I
+,KC_MPLY            ,KC_SLSH     ,KC_Q        ,KC_J    ,KC_K    ,KC_X    ,TD(CT_TMUX)
+,KC_NO              ,KC_NO       ,KC_NO       ,KC_NO   ,TD(CT_CLN)
 
                                                             ,F(F_ALT),F(F_GUI)
                                                                      ,F(F_CTRL)
                                                     ,KC_BSPC,F(F_SFT),KC_ESC
 
                                                                 // right hand
-                                                               ,KC_F12    ,M(KF_6),M(KF_7)   ,M(KF_8),M(KF_9) ,M(KF_10) ,KC_F11
-                                                               ,TD(CT_RBP),KC_F   ,KC_G      ,KC_C   ,KC_R    ,KC_L     ,KC_BSLS
-                                                                          ,KC_D   ,KC_H      ,KC_T   ,KC_N    ,KC_S     ,KC_EQL
-                                                               ,KC_MINS   ,KC_B   ,KC_M      ,KC_W   ,KC_V    ,KC_Z     ,KC_MSTP
-                                                                                  ,KC_MINS   ,KC_NO  ,KC_NO   ,KC_NO    ,KC_NO
+                                                               ,M(Fx)     ,M(A_0)  ,M(A_2)    ,M(A_4)  ,M(A_6)  ,M(A_8)   ,M(A_PLVR)
+                                                               ,TD(CT_RBP),KC_F    ,KC_G      ,KC_C    ,KC_R    ,KC_L     ,KC_BSLS
+                                                                          ,KC_D    ,KC_H      ,KC_T    ,KC_N    ,KC_S     ,KC_EQL
+                                                               ,TD(CT_TPS),KC_B    ,KC_M      ,KC_W    ,KC_V    ,KC_Z     ,TD(CT_SR)
+                                                                                   ,KC_MINS   ,KC_NO   ,KC_NO   ,KC_NO    ,KC_NO
 
                                                                ,OSL(NMDIA),KC_DEL
                                                                ,KC_LEAD
@@ -166,15 +163,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 1: Adore layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
- * | Play/Pause| 1 F1 | 2 F2 | 3 F3 | 4 F4 | 5 F5 | Plvr |           |  F12 | 6 F6 | 7 F7 | 8 F8 | 9 F9 | 0 F10|       F11 |
+ * | Play/Pause| 9    | 7  @ | 5  * | 3  ^ | 1  $ | F11  |           |  Fx  | 0  % | 2  ! | 4  # | 6  & | 8    |    Plover |
  * |-----------+------+------+------+------+-------------|           |------+------+------+------+------+------+-----------|
- * |        `~ |   Y  |   W  |   G  |   L  |   M  |   (  |           |  )   |   F  |   H  |   C  |   P  |  X   | \         |
+ * |         \ |   X  |   W  |   C  |   H  |   F  |   (  |           |  )   |   M  |   G  |   L  |   P  |  /   | `~        |
  * |-----------+------+------+------+------+------|   [  |           |  ]   |------+------+------+------+------+-----------|
  * | Tab/Arrow |   A  |   O  |   E  |   I  |   U  |------|           |------|   D  |   R  |   T  |   N  |  S   | =         |
- * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
- * |           |   Z  |   Q  |   '  |   ,  |   .  |   :  |           |  -   |   B  |   K  |   V  |   J  |  /   |           |
+ * |-----------+------+------+------+------+------| tmux |           | tmux |------+------+------+------+------+-----------|
+ * |           |   Z  |   Q  |   '  |   ,  |   .  |      |           | pane |   B  |   K  |   V  |   Y  |  J   |           |
  * `-----------+------+------+------+------+-------------'           `-------------+------+------+------+------+-----------'
- *     |       |      |      |      |      |                                       |      |      |      |      |       |
+ *     |       |      |      |      |   :  |                                       |   -  |      |      |      |       |
  *     `-----------------------------------'                                       `-----------------------------------'
  *                                         ,-------------.           ,-------------.
  *                                         | LAlt | GUI  |           | MDIA | Del  |
@@ -186,22 +183,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [ADORE] = KEYMAP(
 // left hand
- KC_MPLY            ,M(KF_1)     ,M(KF_2)     ,M(KF_3),M(KF_4),M(KF_5),M(A_PLVR)
-,KC_GRV             ,KC_Y        ,KC_W        ,KC_G   ,KC_L   ,KC_M   ,TD(CT_LBP)
-,TD(CT_TA)          ,KC_A        ,KC_O        ,KC_E   ,KC_I   ,KC_U
-,KC_NO              ,KC_Z        ,KC_Q        ,KC_QUOT,KC_COMM,KC_DOT ,TD(CT_CLN)
-,KC_NO              ,KC_NO       ,KC_NO       ,KC_NO  ,KC_NO
+ KC_MPLY            ,M(A_9)      ,M(A_7)      ,M(A_5)  ,M(A_3)  ,M(A_1) ,KC_F11
+,KC_BSLS            ,KC_X        ,KC_W        ,KC_C    ,KC_H    ,KC_F   ,TD(CT_LBP)
+,TD(CT_TA)          ,KC_A        ,KC_O        ,KC_E    ,KC_I    ,KC_U
+,KC_NO              ,KC_Z        ,KC_Q        ,KC_QUOT ,KC_COMM ,KC_DOT ,TD(CT_TMUX)
+,KC_NO              ,KC_NO       ,KC_NO       ,KC_NO   ,TD(CT_CLN)
 
                                                             ,F(F_ALT),F(F_GUI)
                                                                      ,F(F_CTRL)
                                                     ,KC_BSPC,F(F_SFT),KC_ESC
 
                                                                 // right hand
-                                                               ,KC_F12    ,M(KF_6),M(KF_7),M(KF_8),M(KF_9) ,M(KF_10) ,KC_F11
-                                                               ,TD(CT_RBP),KC_F   ,KC_H   ,KC_C   ,KC_P    ,KC_X     ,KC_BSLS
-                                                                          ,KC_D   ,KC_R   ,KC_T   ,KC_N    ,KC_S     ,KC_EQL
-                                                               ,KC_MINS   ,KC_B   ,KC_K   ,KC_V   ,KC_J    ,KC_SLSH  ,KC_NO
-                                                                                  ,KC_NO  ,KC_NO  ,KC_NO   ,KC_NO    ,KC_NO
+                                                               ,M(Fx)     ,M(A_0)   ,M(A_2)  ,M(A_4)  ,M(A_6)  ,M(A_8)  ,M(A_PLVR)
+                                                               ,TD(CT_RBP),KC_M     ,KC_G    ,KC_L    ,KC_P    ,KC_SLSH ,KC_GRV
+                                                                          ,KC_D     ,KC_R    ,KC_T    ,KC_N    ,KC_S    ,KC_EQL
+                                                               ,TD(CT_TPS),KC_B     ,KC_K    ,KC_V    ,KC_Y    ,KC_J    ,KC_NO
+                                                                                    ,KC_MINS ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO
 
                                                                ,OSL(NMDIA),KC_DEL
                                                                ,F(F_HUN)
@@ -350,51 +347,51 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 5: Navigation & Media layer
  *
  * ,-----------------------------------------------------.           ,-----------------------------------------------------.
- * | MS Slow   |      |      |      |      |      |ScrLCK|           |ScrLCK|      |      |      |      |      |           |
+ * |           |  F9  |  F7  |  F5  |  F3  |  F1  |ScrLCK|           |      | F10  |  F2  |  F4  |  F6  |  F8  |           |
  * |-----------+------+------+------+------+-------------|           |------+------+------+------+------+------+-----------|
- * | MS Normal |      | Home |  Up  | PgUp |      |      |           |Scroll|      |MsUpL | MsUp |MsUpR |      |PrintScreen|
- * |-----------+------+------+------+------+------|      |           |  Up  |------+------+------+------+------+-----------|
- * | MS Fast   |      | Left | Down | Right|      |------|           |------|      |MsLeft| MsDn |MsRght|      |           |
- * |-----------+------+------+------+------+------|      |           |Scroll|------+------+------+------+------+-----------|
- * | Play/Pause|      | End  | Down | PgDn |      |      |           | Down |      |MsDnL | MsDn |MsDnR |      |      Stop |
+ * |           |      |      |      |      |      |      |           |      |      |      |      |      |      |           |
+ * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
+ * |           |      |      |      |      |      |------|           |------|      |      |      |      |      |           |
+ * |-----------+------+------+------+------+------|      |           |      |------+------+------+------+------+-----------|
+ * |           |      |      |      |      |      |      |           |      |      |      |      |      |      |           |
  * `-----------+------+------+------+------+-------------'           `-------------+------+------+------+------+-----------'
  *      |      |      |      |      |      |                                       |      |      |      |      |      |
  *      `----------------------------------'                                       `----------------------------------'
  *                                         ,-------------.           ,-------------.
- *                                         | Mute | VlUp |           | BASE | MClk |
+ *                                         | Mute | VlUp |           | BASE |      |
  *                                  ,------|------|------|           |------+------+------.
- *                                  |      |      | VlDn |           | Prev |Left  |Right |
- *                                  |  SPC | Enter|------|           |------| Click| Click|
- *                                  |      |      | ESC  |           | Next |      |      |
+ *                                  |      |      | VlDn |           |      |      |      |
+ *                                  |      |      |------|           |------|      |      |
+ *                                  |      |      |      |           |      |      |      |
  *                                  `--------------------'           `--------------------'
  */
 [NMDIA] = KEYMAP(
 // left hand
- M(A_ACL0)  ,KC_NO       ,KC_NO      ,KC_NO   ,KC_NO   ,KC_NO   ,LGUI(KC_L)
-,M(A_ACL1)  ,KC_NO       ,KC_HOME    ,KC_UP   ,KC_PGUP ,KC_NO   ,KC_NO
-,M(A_ACL2)  ,KC_NO       ,KC_LEFT    ,KC_DOWN ,KC_RIGHT,KC_NO
-,KC_MPLY    ,KC_NO       ,KC_END     ,KC_DOWN ,KC_PGDN ,KC_NO   ,KC_NO
+ KC_NO      ,KC_F9       ,KC_F7      ,KC_F5   ,KC_F3   ,KC_F1   ,LGUI(KC_L)
+,KC_NO      ,KC_NO       ,KC_NO      ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO
+,KC_NO      ,KC_NO       ,KC_NO      ,KC_NO   ,KC_NO   ,KC_NO
+,KC_NO      ,KC_NO       ,KC_NO      ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO
 ,KC_NO      ,KC_NO       ,KC_NO      ,KC_NO   ,KC_NO
                                                         ,KC_MUTE ,KC_VOLU
                                                                  ,KC_VOLD
-                                                 ,KC_SPC,KC_ENTER,KC_ESC
+                                                 ,KC_NO ,KC_NO   ,KC_TRNS
 
                                                                      // right hand
-                                                                     ,LGUI(KC_L),KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO    ,KC_NO
-                                                                     ,KC_WH_U   ,KC_NO   ,M(A_MUL),KC_MS_U ,M(A_MUR),KC_NO    ,KC_PSCR
-                                                                                ,KC_NO   ,KC_MS_L ,KC_MS_D ,KC_MS_R ,KC_NO    ,KC_NO
-                                                                     ,KC_WH_D   ,KC_NO   ,M(A_MDL),KC_MS_D ,M(A_MDR),KC_NO    ,KC_MSTP
+                                                                     ,KC_TRNS   ,KC_F10  ,KC_F2   ,KC_F4   ,KC_F6   ,KC_F8    ,KC_NO
+                                                                     ,KC_NO     ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO    ,KC_NO
+                                                                                ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO    ,KC_NO
+                                                                     ,KC_NO     ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO    ,KC_NO
                                                                                          ,KC_NO   ,KC_NO   ,KC_NO   ,KC_NO    ,KC_NO
 
-                                                                     ,KC_TRNS   ,KC_MS_BTN3
-                                                                     ,KC_MPRV
-                                                                     ,KC_MNXT   ,KC_BTN1 ,KC_BTN2
+                                                                     ,KC_TRNS   ,KC_NO
+                                                                     ,KC_NO
+                                                                     ,KC_NO     ,KC_NO   ,KC_NO
     ),
 
 /* Keymap 6: Steno for Plover
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
- * |        |      |      |      |      |      | BASE |           |      |      |      |      |      |      |        |
+ * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |  BASE  |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
  * |        |   #  |   #  |   #  |   #  |   #  |   #  |           |  #   |  #   |  #   |   #  |   #  |  #   |   #    |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
@@ -415,7 +412,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [PLVR] = KEYMAP(
 // left hand
-KC_NO,  KC_NO,  KC_NO,  KC_NO,   KC_NO,  KC_NO,   M(A_PLVR),
+KC_NO,  KC_NO,  KC_NO,  KC_NO,   KC_NO,  KC_NO,   KC_NO,
 KC_NO,  PV_NUM, PV_NUM, PV_NUM,  PV_NUM, PV_NUM,  PV_NUM,
 KC_NO,  PV_LS,  PV_LT,  PV_LP,   PV_LH,  PV_STAR,
 KC_NO,  PV_LS,  PV_LK,  PV_LW,   PV_LR,  PV_STAR, PV_STAR,
@@ -425,7 +422,7 @@ KC_NO,  KC_NO,  KC_NO,  KC_NO,   KC_NO,
                                            PV_A,  PV_O,  KC_NO,
 
                                                  // right hand
-                                                 KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
+                                                 KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   M(A_PLVR),
                                                  PV_NUM,  PV_NUM,  PV_NUM,  PV_NUM,  PV_NUM,  PV_NUM,  PV_NUM,
                                                           PV_STAR, PV_RF,   PV_RP,   PV_RL,   PV_RT,   PV_RD,
                                                  PV_STAR, PV_STAR, PV_RR,   PV_RB,   PV_RG,   PV_RS,   PV_RZ,
@@ -514,39 +511,61 @@ static macro_t *ang_do_hun (keyrecord_t *record, uint16_t accent, uint16_t hun_c
   return MACRO_NONE;
 }
 
-static bool from_appsel;
+static void ang_handle_num_row(uint8_t id, keyrecord_t *record) {
+  uint8_t idx = id - A_1;
+  uint8_t kc;
+  static bool shifted[10];
 
-static void ang_handle_kf (keyrecord_t *record, uint8_t id)
-{
-  uint8_t code = id - KF_1;
+  if (keyboard_report->mods & MOD_BIT(KC_LSFT) ||
+      ((get_oneshot_mods() & MOD_BIT(KC_LSFT)) && !has_oneshot_mods_timed_out())) {
+    if (record->event.pressed)
+      shifted[idx] = true;
+  }
+
+  if (!shifted[idx]) {
+    kc = idx + KC_1;
+  } else {
+    switch (id) {
+    case A_8:
+    case A_9:
+      shifted[idx] = false;
+      return;
+
+    case A_7:
+      kc = KC_2;
+      break;
+    case A_5:
+      kc = KC_8;
+      break;
+    case A_3:
+      kc = KC_6;
+      break;
+    case A_1:
+      kc = KC_4;
+      break;
+
+    case A_0:
+      kc = KC_5;
+      break;
+    case A_2:
+      kc = KC_1;
+      break;
+    case A_4:
+      kc = KC_3;
+      break;
+    case A_6:
+      kc = KC_7;
+      break;
+    }
+  }
 
   if (record->event.pressed) {
-    kf_timers[code] = timer_read ();
+    register_code (kc);
   } else {
-    uint8_t kc_base;
-
-    if (from_appsel) {
-      from_appsel = false;
-      return;
-    }
-
-    if (kf_timers[code] && timer_elapsed (kf_timers[code]) > TAPPING_TERM) {
-      // Long press
-      kc_base = KC_F1;
-    } else {
-      kc_base = KC_1;
-    }
-    kf_timers[code] = 0;
-    code += kc_base;
-
-    register_code (code);
-    unregister_code (code);
+    unregister_code (kc);
+    shifted[idx] = false;
   }
 }
-
-static struct {
-  uint8_t idx;
-} m_accel_state;
 
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 {
@@ -592,73 +611,20 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
       case HU_UEE:
         return ang_do_hun (record, KC_EQL, KC_U);
 
-#if MOUSEKEY_ENABLE
-        /* Mouse movement */
-      case A_MUL:
-        if (record->event.pressed) {
-          mousekey_on(KC_MS_UP);
-          mousekey_on(KC_MS_LEFT);
-        } else {
-          mousekey_off(KC_MS_UP);
-          mousekey_off(KC_MS_LEFT);
-        }
-        mousekey_send();
-        break;
-
-      case A_MUR:
-        if (record->event.pressed) {
-          mousekey_on(KC_MS_UP);
-          mousekey_on(KC_MS_RIGHT);
-        } else {
-          mousekey_off(KC_MS_UP);
-          mousekey_off(KC_MS_RIGHT);
-        }
-        mousekey_send();
-        break;
-
-      case A_MDL:
-        if (record->event.pressed) {
-          mousekey_on(KC_MS_DOWN);
-          mousekey_on(KC_MS_LEFT);
-        } else {
-          mousekey_off(KC_MS_DOWN);
-          mousekey_off(KC_MS_LEFT);
-        }
-        mousekey_send();
-        break;
-
-      case A_MDR:
-        if (record->event.pressed) {
-          mousekey_on(KC_MS_DOWN);
-          mousekey_on(KC_MS_RIGHT);
-        } else {
-          mousekey_off(KC_MS_DOWN);
-          mousekey_off(KC_MS_RIGHT);
-        }
-        mousekey_send();
-        break;
-
-      case A_ACL0 ... A_ACL2:
-        if (record->event.pressed) {
-          uint8_t idx = id - A_ACL0;
-          if (m_accel_state.idx == id) {
-            mousekey_off(m_accel_state.idx - A_ACL0 + KC_ACL0);
-            m_accel_state.idx = 0;
-          } else {
-            if (m_accel_state.idx) {
-              mousekey_off(m_accel_state.idx - A_ACL0 + KC_ACL0);
-              m_accel_state.idx = 0;
-            }
-            mousekey_on(KC_ACL0 + idx);
-            m_accel_state.idx = id;
-          }
-        }
-        break;
-#endif
-
         /* Plover base */
       case A_PLVR:
         toggle_steno(record->event.pressed);
+        break;
+
+        /* Fx */
+      case Fx:
+        if (record->event.pressed) {
+          set_oneshot_mods (MOD_LALT);
+          layer_on (NMDIA);
+          set_oneshot_layer (NMDIA, ONESHOT_START);
+        } else {
+          clear_oneshot_layer_state (ONESHOT_PRESSED);
+        }
         break;
 
         /* GUI & AppSel */
@@ -667,7 +633,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
           register_code (KC_LGUI);
           if (record->tap.count && !record->tap.interrupted) {
             if (record->tap.count >= 2) {
-              register_code (KC_W);
+              uprintf("CMD:appsel_start\n");
               layer_on (APPSEL);
               set_oneshot_layer (APPSEL, ONESHOT_START);
             }
@@ -678,7 +644,6 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         } else {
           if (record->tap.count >= 2)
             {
-              unregister_code (KC_W);
               clear_oneshot_layer_state (ONESHOT_PRESSED);
             }
           gui_timer = timer_read ();
@@ -686,42 +651,38 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         break;
 
       case APP_SLK:
-        from_appsel = true;
-        return MACRODOWN(T(S), T(L), T(A), T(C), T(K), T(ENT), END);
+        if (record->event.pressed)
+          uprintf("CMD:appsel_slack\n");
+        break;
 
       case APP_EMCS:
-        from_appsel = true;
-        return MACRODOWN(T(G), T(N), T(U), T(SPC), T(E), T(M), T(A), T(C), T(S), T(SPC), T(2), T(4), T(ENT), END);
+        if (record->event.pressed)
+          uprintf("CMD:appsel_emacs\n");
+        break;
 
       case APP_TERM:
-        from_appsel = true;
-        if (!record->event.pressed) {
-          register_code(KC_ESC);
-          unregister_code(KC_ESC);
-          wait_ms(TAPPING_TERM + 25);
-          register_code(KC_DEL);
-          unregister_code(KC_DEL);
-        }
+        if (record->event.pressed)
+          uprintf("CMD:appsel_term\n");
         break;
 
       case APP_CHRM:
-        from_appsel = true;
-        return MACRODOWN(T(C), T(H), T(R), T(O), T(M), T(ENT), END);
+        if (record->event.pressed)
+          uprintf("CMD:appsel_chrome\n");
+        break;
 
       case APP_MSIC:
-        from_appsel = true;
-        return MACRODOWN(T(R), T(H), T(Y), T(T), T(H), T(M), T(B), T(O), T(X), T(ENT), END);
+        if (record->event.pressed)
+          uprintf("CMD:appsel_music\n");
+        break;
 
-        /* Function keys */
-      case KF_1 ... KF_10:
-        ang_handle_kf (record, id);
+        // number row and symbols
+      case A_1 ... A_0:
+        ang_handle_num_row(id, record);
         break;
       }
 
       return MACRO_NONE;
 };
-
-static uint8_t is_adore = 0;
 
 // Runs just one time when the keyboard initializes.
 void matrix_init_user(void) {
@@ -751,15 +712,15 @@ void matrix_init_user(void) {
 
 LEADER_EXTERNS();
 
-static void ang_tap (uint8_t code, ...) {
-  uint8_t kc = code;
+static void ang_tap (uint16_t code, ...) {
+  uint16_t kc = code;
   va_list ap;
 
   va_start(ap, code);
 
   do {
-    register_code(kc);
-    unregister_code(kc);
+    register_code16(kc);
+    unregister_code16(kc);
     wait_ms(50);
     kc = va_arg(ap, int);
   } while (kc != 0);
@@ -805,6 +766,86 @@ static void ang_tap_dance_ta_reset (qk_tap_dance_state_t *state, void *user_data
     layer_off (ARRW);
 }
 
+static void ang_tap_dance_tmux_finished (qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count == 1) {
+    register_code(KC_LALT);
+    register_code(KC_SPC);
+    unregister_code(KC_SPC);
+    unregister_code(KC_LALT);
+  } else {
+    register_code(KC_LCTL);
+    register_code(KC_A);
+    unregister_code(KC_A);
+    unregister_code(KC_LCTL);
+  }
+}
+
+static void ang_tap_dance_tmux_pane_select (qk_tap_dance_state_t *state, void *user_data) {
+  uint8_t kc = KC_P;
+
+  if (state->count >= 2) {
+    kc = KC_Z;
+  }
+  
+  register_code(KC_LALT);
+  register_code(KC_SPC);
+  unregister_code(KC_SPC);
+  unregister_code(KC_LALT);
+
+  register_code(kc);
+  unregister_code(kc);
+}
+
+static void
+_td_sr_each (qk_tap_dance_state_t *state, void *user_data) {
+  skip_leds = true;
+
+  switch (state->count) {
+  case 1:
+    ergodox_right_led_3_on ();
+    break;
+  case 2:
+    ergodox_right_led_2_on ();
+    break;
+  case 3:
+    ergodox_right_led_1_on ();
+    break;
+  case 4:
+    ergodox_right_led_3_off ();
+    wait_ms (50);
+    ergodox_right_led_2_off ();
+    wait_ms (50);
+    ergodox_right_led_1_off ();
+    break;
+  }
+}
+
+static void
+_td_sr_finished (qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count == 1) {
+    register_code (KC_MSTP);
+  }
+  if (state->count >= 4) {
+    uprintf("CMD:reflash\n");
+    wait_ms (1000);
+    reset_keyboard ();
+    reset_tap_dance (state);
+  }
+}
+
+static void
+_td_sr_reset (qk_tap_dance_state_t *state, void *user_data) {
+  ergodox_right_led_1_off ();
+  wait_ms (50);
+  ergodox_right_led_2_off ();
+  wait_ms (50);
+  ergodox_right_led_3_off ();
+
+  if (state->count == 1) {
+    unregister_code (KC_MSTP);
+  }
+}
+
 qk_tap_dance_action_t tap_dance_actions[] = {
    [CT_CLN] = ACTION_TAP_DANCE_DOUBLE (KC_COLN, KC_SCLN)
   ,[CT_TA]  = {
@@ -813,6 +854,9 @@ qk_tap_dance_action_t tap_dance_actions[] = {
    }
   ,[CT_LBP] = ACTION_TAP_DANCE_DOUBLE (KC_LBRC, KC_LPRN)
   ,[CT_RBP] = ACTION_TAP_DANCE_DOUBLE (KC_RBRC, KC_RPRN)
+  ,[CT_TMUX]= ACTION_TAP_DANCE_FN (ang_tap_dance_tmux_finished)
+  ,[CT_TPS] = ACTION_TAP_DANCE_FN (ang_tap_dance_tmux_pane_select)
+  ,[CT_SR]  = ACTION_TAP_DANCE_FN_ADVANCED (_td_sr_each, _td_sr_finished, _td_sr_reset)
 };
 
 // Runs constantly in the background, in a loop.
@@ -823,63 +867,80 @@ void matrix_scan_user(void) {
   if (gui_timer && timer_elapsed (gui_timer) > TAPPING_TERM)
     unregister_code (KC_LGUI);
 
-  if (layer == HUN) {
-    ergodox_right_led_2_on();
-    ergodox_right_led_3_on();
-  } else if (layer == NMDIA) {
-    ergodox_right_led_1_on();
-    ergodox_right_led_2_on();
-  } else if (layer == PLVR) {
-    ergodox_right_led_1_on ();
-    ergodox_right_led_2_on ();
-    ergodox_right_led_3_on ();
-  } else if (layer == ADORE) {
-    ergodox_right_led_1_on ();
-    ergodox_right_led_2_on ();
-    ergodox_right_led_3_on ();
+  if (!skip_leds) {
+    if (layer == HUN) {
+      ergodox_right_led_2_on();
+      ergodox_right_led_3_on();
+    } else if (layer == NMDIA) {
+      ergodox_right_led_1_on();
+      ergodox_right_led_2_on();
+    } else if (layer == PLVR) {
+      ergodox_right_led_1_on ();
+      ergodox_right_led_2_on ();
+      ergodox_right_led_3_on ();
+    } else if (layer == ADORE) {
+      ergodox_right_led_1_on ();
+      ergodox_right_led_2_on ();
+      ergodox_right_led_3_on ();
 
-    ergodox_right_led_2_set (LED_BRIGHTNESS_HI);
+      ergodox_right_led_2_set (LED_BRIGHTNESS_HI);
+    }
   }
 
   if (layer_state & (1UL << ARRW)) {
-    ergodox_right_led_1_on ();
-    ergodox_right_led_3_on ();
+    if (!skip_leds) {
+      ergodox_right_led_1_on ();
+      ergodox_right_led_3_on ();
+    }
     is_arrow = true;
   }
 
-  if (keyboard_report->mods & MOD_BIT(KC_LSFT) ||
-      ((get_oneshot_mods() & MOD_BIT(KC_LSFT)) && !has_oneshot_mods_timed_out())) {
-    ergodox_right_led_1_set (LED_BRIGHTNESS_HI);
-    ergodox_right_led_1_on ();
-  } else {
-    ergodox_right_led_1_set (LED_BRIGHTNESS_LO);
-    if (layer != NMDIA && layer != PLVR && layer != ADORE && !is_arrow)
-      ergodox_right_led_1_off ();
-  }
+  if (!skip_leds) {
+    if (keyboard_report->mods & MOD_BIT(KC_LSFT) ||
+        ((get_oneshot_mods() & MOD_BIT(KC_LSFT)) && !has_oneshot_mods_timed_out())) {
+      ergodox_right_led_1_set (LED_BRIGHTNESS_HI);
+      ergodox_right_led_1_on ();
+    } else {
+      ergodox_right_led_1_set (LED_BRIGHTNESS_LO);
+      if (layer != NMDIA && layer != PLVR && layer != ADORE && !is_arrow)
+        ergodox_right_led_1_off ();
+    }
 
-  if (keyboard_report->mods & MOD_BIT(KC_LALT) ||
-      ((get_oneshot_mods() & MOD_BIT(KC_LALT)) && !has_oneshot_mods_timed_out())) {
-    ergodox_right_led_2_set (LED_BRIGHTNESS_HI);
-    ergodox_right_led_2_on ();
-  } else {
-    ergodox_right_led_2_set (LED_BRIGHTNESS_LO);
-    if (layer != HUN && layer != NMDIA && layer != PLVR && layer != ADORE)
-      ergodox_right_led_2_off ();
-  }
+    if (keyboard_report->mods & MOD_BIT(KC_LALT) ||
+        ((get_oneshot_mods() & MOD_BIT(KC_LALT)) && !has_oneshot_mods_timed_out())) {
+      ergodox_right_led_2_set (LED_BRIGHTNESS_HI);
+      ergodox_right_led_2_on ();
+    } else {
+      ergodox_right_led_2_set (LED_BRIGHTNESS_LO);
+      if (layer != HUN && layer != NMDIA && layer != PLVR && layer != ADORE)
+        ergodox_right_led_2_off ();
+    }
 
-  if (keyboard_report->mods & MOD_BIT(KC_LCTRL) ||
-      ((get_oneshot_mods() & MOD_BIT(KC_LCTRL)) && !has_oneshot_mods_timed_out())) {
-    ergodox_right_led_3_set (LED_BRIGHTNESS_HI);
-    ergodox_right_led_3_on ();
-  } else {
-    ergodox_right_led_3_set (LED_BRIGHTNESS_LO);
-    if (layer != HUN && layer != PLVR && layer != ADORE && !is_arrow)
-      ergodox_right_led_3_off ();
+    if (keyboard_report->mods & MOD_BIT(KC_LCTRL) ||
+        ((get_oneshot_mods() & MOD_BIT(KC_LCTRL)) && !has_oneshot_mods_timed_out())) {
+      ergodox_right_led_3_set (LED_BRIGHTNESS_HI);
+      ergodox_right_led_3_on ();
+    } else {
+      ergodox_right_led_3_set (LED_BRIGHTNESS_LO);
+      if (layer != HUN && layer != PLVR && layer != ADORE && !is_arrow)
+        ergodox_right_led_3_off ();
+    }
   }
 
   LEADER_DICTIONARY() {
     leading = false;
     leader_end ();
+
+    SEQ_ONE_KEY (KC_C) {
+      ang_tap (LSFT(KC_C), KC_S, KC_I, KC_L, KC_L, KC_RALT, KC_QUOT, KC_A, KC_M, KC_A, KC_S,
+               KC_S, KC_Z, KC_O, KC_N, KC_Y, KC_K, KC_RALT, KC_QUOT, KC_A, KC_M, 0);
+    }
+
+    SEQ_ONE_KEY (KC_G) {
+      ang_tap (LSFT(KC_G), KC_E, KC_J, KC_G, KC_RALT, KC_EQL, KC_O,
+               KC_RALT, KC_EQL, KC_O,
+               KC_RALT, KC_EQL, KC_O, 0);
+    }
 
 #if KEYLOGGER_ENABLE
     SEQ_ONE_KEY (KC_D) {
@@ -889,11 +950,6 @@ void matrix_scan_user(void) {
       log_enable = !log_enable;
     }
 #endif
-
-    SEQ_ONE_KEY (KC_Q) {
-      register_code16 (LCTL(KC_1));
-      unregister_code16 (LCTL(KC_1));
-    }
 
     SEQ_ONE_KEY (KC_T) {
       time_travel = !time_travel;
@@ -929,18 +985,7 @@ void matrix_scan_user(void) {
     }
 
     SEQ_TWO_KEYS (KC_W, KC_M) {
-      register_code (KC_LALT);
-      register_code (KC_F2);
-      unregister_code (KC_F2);
-      unregister_code (KC_LALT);
-
-      wait_ms (1000);
-
-      ang_tap (KC_M, KC_A, KC_X, KC_MINS, KC_F, KC_O, KC_C, KC_U, KC_S, KC_E, KC_D, KC_ENT, 0);
-      register_code (KC_LGUI);
-      register_code (KC_UP);
-      unregister_code (KC_UP);
-      unregister_code (KC_LGUI);
+      uprintf("CMD:wm\n");
     }
 
     SEQ_ONE_KEY (KC_A) {
@@ -993,14 +1038,19 @@ const qk_ucis_symbol_t ucis_symbol_table[] = UCIS_TABLE
  UCIS_SYM("snowman", 0x2603),
  UCIS_SYM("coffee", 0x2615),
  UCIS_SYM("heart", 0x2764),
- UCIS_SYM("bolt", 0x26a1)
+ UCIS_SYM("bolt", 0x26a1),
+ UCIS_SYM("pi", 0x03c0),
+ UCIS_SYM("mouse", 0x1f401)
 );
 
 bool process_record_user (uint16_t keycode, keyrecord_t *record) {
 #if KEYLOGGER_ENABLE
   if (log_enable) {
-    xprintf ("KL: col=%02d, row=%02d, pressed=%d, layer=%s\n", record->event.key.col,
-             record->event.key.row, record->event.pressed, (is_adore) ? "ADORE" : "Dvorak");
+    uint8_t layer = biton32(layer_state);
+
+    if ((layer == ADORE) || (layer == BASE))
+      uprintf ("KL: col=%02d, row=%02d, pressed=%d, layer=%s\n", record->event.key.col,
+               record->event.key.row, record->event.pressed, (is_adore) ? "ADORE" : "Dvorak");
   }
 #endif
 
@@ -1047,8 +1097,8 @@ void qk_ucis_symbol_fallback (void) {
   for (uint8_t i = 0; i < qk_ucis_state.count - 1; i++) {
     uint8_t code;
 
-    if (qk_ucis_state.codes[i] > KF_1)
-      code = qk_ucis_state.codes[i] - KF_1 + KC_1;
+    if ((qk_ucis_state.codes[i] >= M(A_1)) && (qk_ucis_state.codes[i] <= M(A_0)))
+      code = qk_ucis_state.codes[i] - M(A_1) + KC_1;
     else
       code = qk_ucis_state.codes[i];
     register_code(code);
