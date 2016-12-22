@@ -24,8 +24,6 @@
 #define KC_M_B1 KC_MS_BTN1
 #define KC_M_B2 KC_MS_BTN2
 #define KC_M_B3 KC_MS_BTN3
-#define LANG_EN M(0)
-#define LANG_JA M(1)
 
 //Layers
 enum layers {
