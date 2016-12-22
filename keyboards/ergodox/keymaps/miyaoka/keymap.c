@@ -24,6 +24,8 @@
 #define KC_M_B1 KC_MS_BTN1
 #define KC_M_B2 KC_MS_BTN2
 #define KC_M_B3 KC_MS_BTN3
+#define KC_NEXT C(KC_TAB)
+#define KC_PREV SC(KC_TAB)
 
 //Layers
 enum layers {
@@ -399,7 +401,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |        |      |      | M_U  |      | MW_U |   (  |           |  )   | Home | PgUp |  Up  | PgDn |      |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * |        |      | M_L  | M_D  | M_R  | MW_D |------|           |------| End  | Left | Down | Right|   :  |        |
- * |--------+------+------+------+------+------|SC Tab|           | C Tab|------+------+------+------+------+--------|
+ * |--------+------+------+------+------+------| PREV |           | NEXT |------+------+------+------+------+--------|
  * |        |      |      |      |      |      |      |           |      |      |      |      |      |  ;:  |        |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   |      |      |      | MBtn3| MBtn2|                                       |      |      |      |      |      |
@@ -417,7 +419,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______,      KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,            KC_F11,
     _______,      _______,        _______,        KC_M_U,         _______,        KC_M_WU,          KC_LPRN,
     _______,      _______,        KC_M_L,         KC_M_D,         KC_M_R,         KC_M_WD,
-    _______,      _______,        _______,        _______,        _______,        _______,          SC(KC_TAB),
+    _______,      _______,        _______,        _______,        _______,        _______,          KC_PREV,
     _______,      _______,        _______,        KC_M_B3,        KC_M_B2,
 
                   _______,        _______,
@@ -428,7 +430,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_F12,       KC_F6,          KC_F7,          KC_F8,          KC_F9,          KC_F10,           MO(L_CONF),
     KC_RPRN,      KC_HOME,        KC_PGUP,        KC_UP,          KC_PGDN,        _______,          _______,
                   KC_END,         KC_LEFT,        KC_DOWN,        KC_RIGHT,       KC_COLN,          _______,
-    C(KC_TAB),    _______,        _______,        _______,        _______,        KC_SCLN,          _______,
+    KC_NEXT,      _______,        _______,        _______,        _______,        KC_SCLN,          _______,
                                   _______,        _______,        _______,        _______,          _______,
 
     _______,      _______,
