@@ -54,7 +54,7 @@ uint8_t init_mcp23018(void) {
 
     uint8_t sreg_prev;
     sreg_prev=SREG;
-    cli();
+  //  cli();
     if (i2c_initialized == 0) {
         i2c_init();  // on pins D(1,0)
         i2c_initialized++;
