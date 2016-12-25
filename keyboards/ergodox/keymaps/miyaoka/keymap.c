@@ -585,11 +585,13 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
   switch(id) {
     case T_EISU: {
       if (record->event.pressed) {
-        register_mods (MOD_BIT(KC_LALT));
+        add_mods(MOD_BIT(KC_LALT));
       } else {
-        unregister_mods (MOD_BIT(KC_LALT));
         if (is_tap(record)) {
+          del_mods(MOD_BIT(KC_LALT));
           set_eisu();
+        } else {
+          unregister_code(KC_LALT);
         }
       }
       break;
