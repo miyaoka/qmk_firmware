@@ -102,7 +102,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_LSFT,    _______,    _______,    _______,    _______,    _______,    KC_TAB,
   _______,    _______,    KC_BSLS,    KC_GRV,     SFT_T(KC_MINS),
 
-              _______,    M(T_EISU),
+              _______,    _______,
                           _______,
   _______,    M(T_EISU),    KC_LCTL,
 
