@@ -89,7 +89,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                 ,------|------|------|       |------+--------+------.
  *                                 |      |      |      |       |      |        |      |
  *                                 |      | EISU |------|       |------| KANA   | Enter|
- *                                 |      | /LAlt| LCtrl|       | ESC  | /SYMB  | /NAV |
+ *                                 |      | /LAlt| LCtrl|       | ESC  | /RCtrl | /NAV |
  *                                 `--------------------'       `----------------------'
  */
 // If it accepts an argument (i.e, is a function), it doesn't need KC_.
@@ -598,11 +598,13 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
     }
     case T_KANA: {
       if (record->event.pressed) {
-        layer_on(L_SYMB);
+        add_mods(MOD_BIT(KC_RCTL));
       } else {
-        layer_off(L_SYMB);
         if (is_tap(record)) {
+          del_mods(MOD_BIT(KC_RCTL));
           set_kana();
+        } else {
+          unregister_code(KC_RCTL);
         }
       }
       break;
