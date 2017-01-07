@@ -57,11 +57,10 @@ enum custom_keycodes {
   // os
   MAC,
   WIN,
-};
 
-enum macros {
-  T_EISU = 0,
-  T_KANA
+  // lang
+  A_EN,
+  C_JA,
 };
 
 uint16_t hold_timers[MATRIX_ROWS][MATRIX_COLS];
@@ -104,7 +103,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
               _______,    _______,
                           _______,
-  _______,    M(T_EISU),    KC_LCTL,
+  _______,    A_EN,       KC_LCTL,
 
 
   //righthand
@@ -116,7 +115,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   _______,    _______,
   _______,
-  KC_ESC,     M(T_KANA),    LT(L_NAV,KC_ENT)
+  KC_ESC,     C_JA,       LT(L_NAV,KC_ENT)
 ),
 
 
@@ -576,14 +575,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
-  }
-  return true;
-}
 
-const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
-{
-  switch(id) {
-    case T_EISU: {
+    case A_EN: {
       if (record->event.pressed) {
         add_mods(MOD_BIT(KC_LALT));
       } else {
@@ -594,9 +587,10 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
           unregister_code(KC_LALT);
         }
       }
+      return false;
       break;
     }
-    case T_KANA: {
+    case C_JA: {
       if (record->event.pressed) {
         add_mods(MOD_BIT(KC_RCTL));
       } else {
@@ -607,11 +601,12 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
           unregister_code(KC_RCTL);
         }
       }
+      return false;
       break;
     }
   }
-  return MACRO_NONE;
-};
+  return true;
+}
 
 // Runs just one time when the keyboard initializes.
 void matrix_init_user(void) {
