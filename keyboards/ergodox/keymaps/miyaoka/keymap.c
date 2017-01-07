@@ -518,6 +518,19 @@ bool is_tap (keyrecord_t *record) {
   && timer_elapsed (hold_timers[record->event.key.row][record->event.key.col]) < TAPPING_TERM;
 }
 
+void mod_tap_action(keyrecord_t *record, uint8_t mod, void (*cb)(void) ) {
+  if (record->event.pressed) {
+    add_mods(MOD_BIT(mod));
+  } else {
+    if (is_tap(record)) {
+      del_mods(MOD_BIT(mod));
+      cb();
+    } else {
+      unregister_code(mod);
+    }
+  }
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   // record pressed timer
   if (record->event.pressed) {
@@ -577,30 +590,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
 
     case A_EN: {
-      if (record->event.pressed) {
-        add_mods(MOD_BIT(KC_LALT));
-      } else {
-        if (is_tap(record)) {
-          del_mods(MOD_BIT(KC_LALT));
-          set_eisu();
-        } else {
-          unregister_code(KC_LALT);
-        }
-      }
+      mod_tap_action(record, KC_LALT, set_eisu);
       return false;
       break;
     }
     case C_JA: {
-      if (record->event.pressed) {
-        add_mods(MOD_BIT(KC_RCTL));
-      } else {
-        if (is_tap(record)) {
-          del_mods(MOD_BIT(KC_RCTL));
-          set_kana();
-        } else {
-          unregister_code(KC_RCTL);
-        }
-      }
+      mod_tap_action(record, KC_RCTL, set_kana);
       return false;
       break;
     }
