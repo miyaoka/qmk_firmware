@@ -664,16 +664,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
 
     // langs
-    case CK_A_EN: {
+    case CK_A_EN:
       mod_tap_action(record, KC_LALT, set_eisu);
       return false;
       break;
-    }
-    case CK_C_JA: {
+    case CK_C_JA:
       mod_tap_action(record, KC_RCTL, set_kana);
       return false;
       break;
-    }
   }
   return true;
 }
