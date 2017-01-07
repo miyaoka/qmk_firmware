@@ -408,27 +408,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                 `--------------------'       `--------------------'
  */
 [L_NAV] = KEYMAP(
-    // left hand
-    _______,      KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,            KC_F11,
-    _______,      _______,        KC_PREV,        KC_M_U,         KC_NEXT,        KC_M_WU,          KC_LPRN,
-    KC_LPRN,      _______,        KC_M_L,         KC_M_D,         KC_M_R,         KC_M_WD,
-    _______,      KC_EXLM,        KC_AT,          KC_HASH,        KC_DLR,         KC_PERC,          KC_PREV,
-    _______,      _______,        _______,        KC_M_B3,        KC_M_B2,
+  // left hand
+  _______,    KC_F1,      KC_F2,      KC_F3,      KC_F4,      KC_F5,      KC_F11,
+  _______,    _______,    KC_PREV,    KC_M_U,     KC_NEXT,    KC_M_WU,    KC_LPRN,
+  KC_LPRN,    _______,    KC_M_L,     KC_M_D,     KC_M_R,     KC_M_WD,
+  _______,    KC_EXLM,    KC_AT,      KC_HASH,    KC_DLR,     KC_PERC,    KC_PREV,
+  _______,    _______,    _______,    KC_M_B3,    KC_M_B2,
 
-                  _______,        _______,
-                                  _______,
-    KC_M_B1,      _______,        _______,
+              _______,    _______,
+                          _______,
+  KC_M_B1,    _______,    _______,
 
-    //righthand
-    KC_F12,       KC_F6,          KC_F7,          KC_F8,          KC_F9,          KC_F10,           MO(L_CONF),
-    KC_RPRN,      KC_HOME,        KC_PGUP,        KC_UP,          KC_PGDN,        _______,          _______,
-                  KC_END,         KC_LEFT,        KC_DOWN,        KC_RIGHT,       KC_COLN,          KC_RPRN,
-    KC_NEXT,      KC_CIRC,        KC_AMPR,        KC_ASTR,        _______,        KC_SCLN,          _______,
-                                  _______,        _______,        _______,        _______,          _______,
+  //righthand
+  KC_F12,     KC_F6,      KC_F7,      KC_F8,      KC_F9,      KC_F10,     MO(L_CONF),
+  KC_RPRN,    KC_HOME,    KC_PGUP,    KC_UP,      KC_PGDN,    _______,    _______,
+              KC_END,     KC_LEFT,    KC_DOWN,    KC_RIGHT,   KC_COLN,    KC_RPRN,
+  KC_NEXT,    KC_CIRC,    KC_AMPR,    KC_ASTR,    _______,    KC_SCLN,    _______,
+                          _______,    _______,    _______,    _______,    _______,
 
-    _______,      _______,
-    _______,
-    _______,      _______,   _______
+  _______,    _______,
+  _______,
+  _______,    _______,    _______
 ),
 
 /* Keymap: Cursor, Mouse Layer
