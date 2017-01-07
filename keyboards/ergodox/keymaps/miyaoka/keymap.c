@@ -44,23 +44,17 @@ enum layers {
 enum custom_keycodes {
   //--layers--
   // layouts
-  QWERTY = SAFE_RANGE,
-  QWDR,
-  GAME,
+  CK_GAME = SAFE_RANGE,
 
   // momentary layer
-  SYMB,
-  NAV,
-  CONF,
-  GAME2,
 
   // os
-  MAC,
-  WIN,
+  CK_MAC,
+  CK_WIN,
 
   // lang
-  A_EN,
-  C_JA,
+  CK_A_EN,
+  CK_C_JA,
 };
 
 uint16_t hold_timers[MATRIX_ROWS][MATRIX_COLS];
@@ -103,7 +97,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
               _______,    _______,
                           _______,
-  _______,    A_EN,       KC_LCTL,
+  _______,    CK_A_EN,    KC_LCTL,
 
 
   //righthand
@@ -115,7 +109,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   _______,    _______,
   _______,
-  KC_ESC,     C_JA,       LT(L_NAV,KC_ENT)
+  KC_ESC,     CK_C_JA,    LT(L_NAV,KC_ENT)
 ),
 
 
@@ -461,10 +455,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [L_CONF] = KEYMAP(
   // left hand
-  RESET,      MAC,        WIN,        _______,    _______,    _______,    _______,
-  QWDR,       _______,    _______,    _______,    _______,    _______,    _______,
-  QWERTY,     _______,    _______,    _______,    _______,    _______,
-  GAME,       _______,    _______,    _______,    _______,    _______,    _______,
+  RESET,      CK_MAC,     CK_WIN,        _______,    _______,    _______,    _______,
+  TO(L_QWDR),       _______,    _______,    _______,    _______,    _______,    _______,
+  TO(L_QWERTY),     _______,    _______,    _______,    _______,    _______,
+  CK_GAME,    _______,    _______,    _______,    _______,    _______,    _______,
   _______,    _______,    _______,    _______,    _______,
 
               _______,    _______,
@@ -541,19 +535,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     //--layers--
 
     //layout
-    case QWERTY:
-      if (record->event.pressed) {
-        layer_move(L_QWERTY);
-      }
-      return false;
-      break;
-    case QWDR:
-      if (record->event.pressed) {
-        layer_move(L_QWDR);
-      }
-      return false;
-      break;
-    case GAME:
+    case CK_GAME:
       if (record->event.pressed) {
         layer_move(L_QWERTY);
         layer_on(L_GAME);
@@ -562,39 +544,27 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
 
     //momentary layer
-    case GAME2:
-      switch_layer(L_GAME2, record->event.pressed);
-      return false;
-      break;
-    case NAV:
-      switch_layer(L_NAV, record->event.pressed);
-      return false;
-      break;
-    case CONF:
-      switch_layer(L_CONF, record->event.pressed);
-      return false;
-      break;
 
     //os
-    case MAC:
+    case CK_MAC:
       if (record->event.pressed) {
         persistant_default_layer_set(1UL<<L_MAC);
       }
       return false;
       break;
-    case WIN:
+    case CK_WIN:
       if (record->event.pressed) {
         persistant_default_layer_set(1UL<<L_WIN);
       }
       return false;
       break;
 
-    case A_EN: {
+    case CK_A_EN: {
       mod_tap_action(record, KC_LALT, set_eisu);
       return false;
       break;
     }
-    case C_JA: {
+    case CK_C_JA: {
       mod_tap_action(record, KC_RCTL, set_kana);
       return false;
       break;
