@@ -4,6 +4,7 @@
 #include "ergodox.h"
 #include "debug.h"
 #include "action_layer.h"
+#include "mousekey.h"
 
 //Alias
 #define C(kc) LCTL(kc)
@@ -47,6 +48,7 @@ enum custom_keycodes {
   //--layers--
   // layouts
   CK_GAME = SAFE_RANGE,
+  CK_LNAV2,
 
   // os
   CK_MAC,
@@ -462,7 +464,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
               _______,    _______,
                           _______,
-  MO(L_LNAV2),   _______,    _______,
+  CK_LNAV2,   _______,    _______,
 
   //righthand
   _______,    _______,    _______,    _______,    _______,    _______,    _______,
@@ -628,6 +630,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         layer_move(L_QWERTY);
         layer_on(L_GAME);
+      }
+      return false;
+      break;
+
+    case CK_LNAV2:
+      if (record->event.pressed) {
+        layer_on(L_LNAV2);
+      } else {
+        layer_off(L_LNAV2);
+        if (is_tap(record)) {
+          mousekey_on(KC_M_B1);
+          mousekey_send();
+          mousekey_off(KC_M_B1);
+          mousekey_send();
+        }
       }
       return false;
       break;
