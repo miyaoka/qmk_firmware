@@ -27,6 +27,7 @@
 #define KC_M_B3 KC_MS_BTN3
 #define KC_NEXT C(KC_TAB)
 #define KC_PREV SC(KC_TAB)
+#define MOD_CTLS (MOD_BIT(KC_LCTRL) | MOD_BIT(KC_RCTRL))
 
 //Layers
 enum layers {
@@ -671,6 +672,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case CK_C_JA:
       mod_tap_action(record, KC_RCTL, set_kana);
       return false;
+      break;
+
+    // Ctrl-Q -> Alt-F4
+    case KC_Q:
+      if (
+        record->event.pressed
+        && (get_mods() & MOD_CTLS)
+      ) {
+        clear_keyboard();
+        add_mods(MOD_BIT(KC_LALT));
+        type_code(KC_F4);
+        del_mods(MOD_BIT(KC_LALT));
+        return false;
+      }
       break;
   }
   return true;
