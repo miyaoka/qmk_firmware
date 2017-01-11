@@ -396,7 +396,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
  * |        |      | PREV | M_U  | NEXT | MW_U |   (  |           |  )   | Home | PgUp |  Up  | PgDn |      |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |   (    |      | M_L  | M_D  | M_R  | MW_D |------|           |------| End  | Left | Down | Right|   :  |   )    |
+ * |   (    |   ?  | M_L  | M_D  | M_R  | MW_D |------|           |------| End  | Left | Down | Right|   :  |   )    |
  * |--------+------+------+------+------+------| PREV |           | NEXT |------+------+------+------+------+--------|
  * |        |   !  |   @  |   #  |   $  |   %  |      |           |      |   ^  |   &  |   *  |      |  ;:  |        |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
@@ -414,7 +414,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // left hand
   _______,    KC_F1,      KC_F2,      KC_F3,      KC_F4,      KC_F5,      KC_F11,
   _______,    _______,    KC_PREV,    KC_M_U,     KC_NEXT,    KC_M_WU,    KC_LPRN,
-  KC_LPRN,    _______,    KC_M_L,     KC_M_D,     KC_M_R,     KC_M_WD,
+  KC_LPRN,    KC_QUES,    KC_M_L,     KC_M_D,     KC_M_R,     KC_M_WD,
   _______,    KC_EXLM,    KC_AT,      KC_HASH,    KC_DLR,     KC_PERC,    KC_PREV,
   _______,    _______,    _______,    KC_M_B3,    KC_M_B2,
 
