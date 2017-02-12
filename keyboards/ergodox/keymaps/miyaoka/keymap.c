@@ -83,9 +83,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                        ,-------------.       ,---------------.
  *                                        |      |      |       |      |        |
  *                                 ,------|------|------|       |------+--------+------.
- *                                 |      |      |      |       |      |        |      |
+ *                                 |      |      | LNAV |       |      |        |      |
  *                                 |      | EISU |------|       |------| KANA   | Enter|
- *                                 |      | /LAlt| LNAV |       | ESC  | /RCtrl | /NAV |
+ *                                 |      | /LAlt| ESC  |       | ESC  | /RCtrl | /NAV |
  *                                 `--------------------'       `----------------------'
  */
 // If it accepts an argument (i.e, is a function), it doesn't need KC_.
@@ -99,8 +99,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______,    _______,    KC_BSLS,    KC_GRV,     SFT_T(KC_LBRC),
 
               _______,    _______,
-                          _______,
-  _______,    CK_A_EN,    TG(L_LNAV),
+                          TG(L_LNAV),
+  _______,    CK_A_EN,    KC_ESC,
 
 
   //righthand
