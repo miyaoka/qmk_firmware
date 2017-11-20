@@ -83,7 +83,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                        ,-------------.       ,---------------.
  *                                        |      |      |       |      |        |
  *                                 ,------|------|------|       |------+--------+------.
- *                                 |      |      | LNAV |       |      |        |      |
+ *                                 |      |      |      |       |      |        |      |
  *                                 |      | EISU |------|       |------| KANA   | Enter|
  *                                 |      | /LAlt| ESC  |       | ESC  | /RCtrl | /NAV |
  *                                 `--------------------'       `----------------------'
@@ -99,7 +99,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_LGUI,    _______,    KC_BSLS,    KC_GRV,     SFT_T(KC_LBRC),
 
               _______,    _______,
-                          TG(L_LNAV),
+                          _______,
   _______,    CK_A_EN,    KC_ESC,
 
 
