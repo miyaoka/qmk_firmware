@@ -43,6 +43,7 @@ enum layers {
   L_LNAV,
   L_LNAV2,
   L_NAV, // mouse and cursor
+  L_NAV2,
   L_CONF // config
 };
 
@@ -113,7 +114,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   _______,    _______,
   _______,
-  KC_ESC,     CK_C_JA,    LT(L_NAV,KC_ENT)
+  KC_ESC,     CK_C_JA,    LT(L_NAV2,KC_ENT)
 ),
 
 
@@ -427,6 +428,51 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_F12,     KC_F6,      KC_F7,      KC_F8,      KC_F9,      KC_F10,     MO(L_CONF),
   KC_GT,      KC_HOME,    KC_PGUP,    KC_UP,      KC_PGDN,    _______,    _______,
               KC_END,     KC_LEFT,    KC_DOWN,    KC_RIGHT,   KC_COLN,    KC_RPRN,
+  KC_SLSH,    KC_CIRC,    KC_AMPR,    KC_ASTR,    KC_LPRN,    KC_RPRN,    KC_M_A0,
+                          KC_PIPE,    _______,    _______,    _______,    _______,
+
+  _______,    _______,
+  _______,
+  _______,    _______,    _______
+),
+
+/* Keymap: Vim-like Cursor, Mouse Layer
+ *
+ * ,--------------------------------------------------.           ,--------------------------------------------------.
+ * |        |  F1  |  F2  |  F3  |  F4  |  F5  |  F11 |           | F12  |  F6  |  F7  |  F8  |  F9  |  F10 | ->CNF  |
+ * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
+ * |        |      | PREV | M_U  | NEXT | MW_U |  <   |           |  >   | Home | PgDn | PgUp |  End |      |        |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |   (    |   ?  | M_L  | M_D  | M_R  | MW_D |------|           |------| Left | Down |  Up  | Right|   :  |   )    |
+ * |--------+------+------+------+------+------|      |           |  /   |------+------+------+------+------+--------|
+ * |        |   !  |   @  |   #  |   $  |   %  |      |           |      |   ^  |   &  |   *  |   (  |   )  |        |
+ * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
+ *   |      | LGUI |      |      | MBtn3|                                       |   |  |      |      |      |      |
+ *   `----------------------------------'                                       `----------------------------------'
+ *                                        ,-------------.       ,-------------.
+ *                                        |      |      |       |      |      |
+ *                                 ,------|------|------|       |------+------+------.
+ *                                 |      |      |      |       |      |      |      |
+ *                                 | MBtn1| MBtn2|------|       |------|      |      |
+ *                                 |      |      |      |       |      |      |      |
+ *                                 `--------------------'       `--------------------'
+ */
+ [L_NAV2] = KEYMAP(
+  // left hand
+  _______,    KC_F1,      KC_F2,      KC_F3,      KC_F4,      KC_F5,      KC_F11,
+  _______,    _______,    KC_PREV,    KC_M_U,     KC_NEXT,    KC_M_WU,    KC_LT,
+  KC_LPRN,    KC_QUES,    KC_M_L,     KC_M_D,     KC_M_R,     KC_M_WD,
+  _______,    KC_EXLM,    KC_AT,      KC_HASH,    KC_DLR,     KC_PERC,    _______,
+  _______,    KC_LGUI,    _______,    _______,    KC_M_B3,
+
+              _______,    _______,
+                          _______,
+  KC_M_B1,    KC_M_B2,    _______,
+
+  //righthand
+  KC_F12,     KC_F6,      KC_F7,      KC_F8,      KC_F9,      KC_F10,     MO(L_CONF),
+  KC_GT,      KC_HOME,    KC_PGDN,    KC_PGUP,    KC_END,     _______,    _______,
+              KC_LEFT,    KC_DOWN,    KC_UP,      KC_RIGHT,   KC_COLN,    KC_RPRN,
   KC_SLSH,    KC_CIRC,    KC_AMPR,    KC_ASTR,    KC_LPRN,    KC_RPRN,    KC_M_A0,
                           KC_PIPE,    _______,    _______,    _______,    _______,
 
