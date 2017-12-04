@@ -102,7 +102,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
               _______,    _______,
                           _______,
-  _______,    CK_A_EN,    KC_ESC,
+  _______,    CK_A_EN,    LT(L_NUM, KC_ESC),
 
 
   //righthand
